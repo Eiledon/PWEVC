@@ -39,6 +39,7 @@
 	}
 	
 #navgame li ul { /* second-level lists */
+		z-index:101;
 		position : absolute;
 		left: -999em;
 		margin-left : 23px;;
