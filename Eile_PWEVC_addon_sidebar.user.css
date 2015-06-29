@@ -27,7 +27,7 @@
 		margin: 0;
 		list-style: none;
 		float : left;
-		width : 11em;
+		width:46px;
 	}
 	
 #navgame li { /* all list items */
@@ -35,13 +35,13 @@
 		float : left;
 		line-height : 1.25em;
 		margin-bottom : -1px;
-		width: 11em;
+		width:46px;
 	}
 	
 #navgame li ul { /* second-level lists */
 		position : absolute;
 		left: -999em;
-		margin-left : 11.05em;
+		margin-left : 36px;;
 		margin-top : -1.35em;
 	}
 	
