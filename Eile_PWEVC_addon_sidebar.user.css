@@ -13,12 +13,12 @@
 .spangame {
 	display: block;
 	float: left;
-	padding: 0px;
+	padding: 5px;
 	text-decoration: none;
 	background:#222222;
 	width:100px;
-	border-radius:2px;
-	border: 1px solid white;
+	border-radius:5px;
+	border: 1px solid #444444;
 }
 
 .ligame {
