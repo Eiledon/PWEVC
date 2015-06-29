@@ -33,7 +33,7 @@
 #navgame li { /* all list items */
 		position : relative;
 		float : left;
-		line-height : 1.25em;
+		/*line-height : 1.25em;*/
 		margin-bottom : -1px;
 		width:46px;
 	}
@@ -63,7 +63,7 @@
 	
 #navgame li a:hover {
 		color : white;
-		background-color : black;
+		background-color : transparent;
 	}
 	
 #navgame li:hover ul ul, #navgame li:hover ul ul ul, #navgame li.sfhover ul ul, #navgame li.sfhover ul ul ul {
