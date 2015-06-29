@@ -10,6 +10,13 @@
 	z-index: 100;
 }
 
+.spangame {
+	display: block;
+	float: left;
+	padding: 0px;
+	text-decoration: none;
+}
+
 .ligame {
 	list-style-type: none;
 	display: inline;
