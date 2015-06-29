@@ -43,7 +43,9 @@
 		position : absolute;
 		left: -999em;
 		margin-left : 23px;;
-		margin-top : -25px;
+		margin-top : -50px;
+		border-radius:2px;
+		background:#111111;
 	}
 	
 #navgame li ul ul { /* third-and-above-level lists */
