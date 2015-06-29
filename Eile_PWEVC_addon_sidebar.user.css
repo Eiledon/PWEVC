@@ -13,11 +13,13 @@
 .spangame {
 	display: block;
 	float: left;
-	padding: 5px;
+	padding: 0px;
+	margin:0px;
+	padding-top:-5px;
 	text-decoration: none;
 	background:#222222;
 	width:100px;
-	border-radius:5px;
+	border-radius:10px;
 	border: 1px solid #444444;
 }
 
@@ -65,11 +67,12 @@
 		display : block;
 		/*color : white;*/
 		font-weight : bold;
-		font-size:12px;
+		font-size:8px;
 		text-decoration : none;
 		background:transparent; 
 		border : 0px solid transparent;
-		padding : 0;
+		padding : 0px;
+		margin: 0px;
 	}
 	
 #navgame li a:hover {
