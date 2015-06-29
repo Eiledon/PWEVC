@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        PWEVC Game Logo Sidebar
 // @namespace   https://github.com/Eiledon/PWEVC/
-// @downloadURL https://github.com/Eiledon/PWEVC/raw/master/pwevc_addon_sidebar.js
-// @updateURL  https://github.com/Eiledon/PWEVC/raw/master/pwevc_addon_sidebar.js
+// @downloadURL https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.js
+// @updateURL  https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.js
 // @version    0.1
 // @run-at     document-start
 // @description  Adds sidebar with game logos linking to individual categories on pwe vanilla forums
