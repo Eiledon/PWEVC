@@ -21,3 +21,55 @@
 	list-style-type: none;
 	display: inline;
 }
+
+#navgame, #navgame ul { /* all lists */
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		float : left;
+		width : 11em;
+	}
+	
+#navgame li { /* all list items */
+		position : relative;
+		float : left;
+		line-height : 1.25em;
+		margin-bottom : -1px;
+		width: 11em;
+	}
+	
+#navgame li ul { /* second-level lists */
+		position : absolute;
+		left: -999em;
+		margin-left : 11.05em;
+		margin-top : -1.35em;
+	}
+	
+#navgame li ul ul { /* third-and-above-level lists */
+		left: -999em;
+	}
+	
+#navgame li a {
+		width: 11em;
+		w\idth : 10em;
+		display : block;
+		color : black;
+		font-weight : bold;
+		text-decoration : none;
+		background-color : white;
+		border : 1px solid black;
+		padding : 0 0.5em;
+	}
+	
+#navgame li a:hover {
+		color : white;
+		background-color : black;
+	}
+	
+#navgame li:hover ul ul, #navgame li:hover ul ul ul, #navgame li.sfhover ul ul, #navgame li.sfhover ul ul ul {
+		left: -999em;
+	}
+	
+#navgame li:hover ul, #navgame li li:hover ul, #navgame li li li:hover ul, #navgame li.sfhover ul, #navgame li li.sfhover ul, #navgame li li li.sfhover ul { /* lists nested under hovered list items */
+		left: auto;
+	}
