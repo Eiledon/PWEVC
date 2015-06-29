@@ -36,17 +36,19 @@
 		/*line-height : 1.25em;*/
 		margin-bottom : -5px;
 		width:46px;
+	        border-radius:2px;
 	}
 	
 #navgame li ul { /* second-level lists */
 		z-index:101;
 		position : absolute;
 		left: -999em;
-		top: -10px;
 		margin-left : 23px;;
 		margin-top : -50px;
-		border-radius:2px;
-		background:#111111;
+	}
+	
+#navgame li ul li { /* third-and-above-level lists */
+		width:100px;
 	}
 	
 #navgame li ul ul { /* third-and-above-level lists */
@@ -60,7 +62,7 @@
 		/*color : white;*/
 		font-weight : bold;
 		text-decoration : none;
-		background-color : transparent;
+		background-color : #111111;
 		border : 0px solid transparent;
 		padding : 0;
 	}
