@@ -3,7 +3,7 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
 // @updateURL  https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
-// @version    0.1.2
+// @version    0.2
 // @description  Adds sidebar with game logos linking to individual categories on pwe vanilla forums
 // @match      http://perfectworld.vanillaforums.com/*
 // @grant       none
@@ -18,6 +18,21 @@ function toTitleCase(str)
     return str.replace(/\w+/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
 
+//hover fix for earlier IE
+sfHover = function() {
+	var sfEls = document.getElementById("nav").getElementsByTagName("LI");
+	for (var i=0; i<sfEls.length; i++) {
+		sfEls[i].onmouseover=function() {
+			this.className+=" sfhover";
+		}
+		sfEls[i].onmouseout=function() {
+			this.className=this.className.replace(new RegExp(" sfhover\\b"), "");
+		}
+	}
+}
+if (window.attachEvent) window.attachEvent("onload", sfHover);
+
+//get external css
 getCSS = function(url) {
 	var _head  = document.getElementsByTagName('head')[0];
 	var _link  = document.createElement('link');
@@ -55,43 +70,78 @@ var _div = document.createElement("div"); // outer container
 var _ul = document.createElement("ul"); // inner container unordered list
 
 // details for outer container
-_div.setAttribute('id',"gamediv");
+_div.setAttribute('id',"divgame");
 _div.setAttribute('class',"divgame");
-//_div.setAttribute('style',"position:fixed;width:46px;height:auto;top:50px;left:1px; padding:0px;background:transparent; border:0px solid transparent; z-index:100");
+_ul.setAttribute('id',"navgame");
 
 // loop through games array to populate inner container with list elements
 for(var i=0, len=_games.length; i < len; i++){
   
-  var _li =  document.createElement("LI"); // Create a list element
-  var _span = document.createElement("span"); //Create a container
+  var _li =  document.createElement("li"); // Create a list element
   var _a = document.createElement("a"); //create link
   var _img = document.createElement("img"); // create an image
-
-
-  var _content = _games[i].split("|"); // break games array entry into individual parts
-
-  // format arc name into nice looking title  
-  var _propername = _content[1].replace(/(-|_)/g," "); 
-  _propername = toTitleCase(_propername);
-
-  _li.setAttribute('id',"li_"+_content[0]);
-  _li.setAttribute('class',"ligame");
-  //_li.setAttribute('style',"list-style-type: none;display: inline;"); //set list element formatting
-  _span.setAttribute('class',"spangame");
-  //_span.setAttribute('style',"display: block;float: left;padding: 0px;text-decoration: none;"); // set span formatting
-
-  _a.setAttribute('href', "http://perfectworld.vanillaforums.com/categories/" +_content[0]); //add address to link
   
+  var _content = _games[i].split("|"); // break games array entry into individual parts
+  
+  var _category = _content[0];
+  var _arcname = _content[1];
+  var _imgurl = _content[2];
+  
+  // format arc name into nice looking title  
+  var _propername = toTitleCase(_content[1].replace(/(-|_)/g," ")); 
+  
+  _a.setAttribute('href',"#"); // image link no target for hover
+
   // set image details  
   _img.setAttribute('src',_content[2]);
-  _img.setAttribute('title',_propername +" Forum");
-  _img.setAttribute('alt',_propername +" Forum");
+  _img.setAttribute('title',_propername);
+  _img.setAttribute('alt',_propername);
   _img.setAttribute('height',"25px");
   
- // combine elements together and add into unordered list
- _a.appendChild(_img);
- _span.appendChild(_a);
- _li.appendChild(_span);
+  //add to list element
+  _a.appendChild(_img);
+  _li.appendChild(_a);  
+  
+  // create link to game forum
+  
+  var _ul_1 = document.createElement("ul"); // Create inner list 
+  
+  var _li_1 = document.createElement("li"); // Create inner list element
+  var _span = document.createElement("span"); // create an span for background
+  var _a = document.createElement("a"); //create link
+  
+  _span.setAttribute('class',"spangame"); //apply formatting
+  
+  // populate link detals  
+  _a.setAttribute('href',"http://perfectworld.vanillaforums.com/categories/" + _arcname);
+  _a.setAttribute('class',"UserLink MItem");
+  _a.textContent = "GAME FORUM";
+  
+  //combine elements
+  _span.appendChild(_a);
+  _li_1.appendChild(_span);
+  _ul_1.appendChild(_li_1); 
+  
+  // create link to arc page for game
+  
+  var _li_1 = document.createElement("li"); // // Create inner list element
+  var _span = document.createElement("span"); // create an span for background
+  var _a = document.createElement("a"); //create link
+  
+  _span.setAttribute('class',"spangame"); //apply formatting
+  
+    // populate link details 
+  _a.setAttribute('href',"http://www.arcgames.com/en/games/" + _category); 
+  _a.setAttribute('class',"UserLink MItem");
+  _a.textContent = "GAME PAGE";
+  
+  //combine elements
+  _span.appendChild(_a);
+  _li_1.appendChild(_span);
+  _ul_1.appendChild(_li_1); 
+ 
+// cominbe inner and outer lists  
+ _li.appendChild(_ul_1); 
  _ul.appendChild(_li);
  
 };
