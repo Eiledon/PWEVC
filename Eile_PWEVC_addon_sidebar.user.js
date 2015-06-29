@@ -3,7 +3,7 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
 // @updateURL  https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
-// @version    0.1
+// @version    0.1.1
 // @run-at     document-start
 // @description  Adds sidebar with game logos linking to individual categories on pwe vanilla forums
 // @match      http://perfectworld.vanillaforums.com/*
@@ -11,11 +11,26 @@
 // @copyright  2015, Eiledon
 // ==/UserScript==
 
+
+
 // make tiles look nice
 function toTitleCase(str)
 {
     return str.replace(/\w+/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
 }
+
+getCSS = function(url) {
+	var _head  = document.getElementsByTagName('head')[0];
+	var _link  = document.createElement('link');
+	_link.setAttribute('rel',"stylesheet");
+	_link.setAttribute('type',"text/css");
+	_link.setAttribute('media',"all");
+	_link.setAttribute('href',url);
+	_head.appendChild(link);
+};
+
+getCSS("https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.css");
+
 // game information - "category name|arc name|game logo image"
 var _games = ["startrekonline|star-trek-online|http://images-cdn.perfectworld.com/arc/b0/f8/b0f828fe91b8db7e4a8bc149fbb61c051429636566.png",
 "championsonline|champions-online|http://images-cdn.perfectworld.com/arc/a6/33/a633c3671491651ea7b42d6d95815edb1385152436.png",
@@ -42,7 +57,8 @@ var _ul = document.createElement("ul"); // inner container unordered list
 
 // details for outer container
 _div.setAttribute('id',"gamediv");
-_div.setAttribute('style',"position:fixed;width:46px;height:auto;top:50px;left:1px; padding:0px;background:transparent; border:0px solid transparent; z-index:100");
+_div.setAttribute('class',"divgame");
+//_div.setAttribute('style',"position:fixed;width:46px;height:auto;top:50px;left:1px; padding:0px;background:transparent; border:0px solid transparent; z-index:100");
 
 // loop through games array to populate inner container with list elements
 for(var i=0, len=_games.length; i < len; i++){
@@ -59,7 +75,9 @@ for(var i=0, len=_games.length; i < len; i++){
   var _propername = _content[1].replace(/(-|_)/g," "); 
   _propername = toTitleCase(_propername);
 
-  _li.setAttribute('style',"list-style-type: none;display: inline;"); //set list element formatting
+  _li.setAttribute('id',"li_"+_content[0]);
+  _li.setAttribute('class',"ligame");
+  //_li.setAttribute('style',"list-style-type: none;display: inline;"); //set list element formatting
   _span.setAttribute('style',"display: block;float: left;padding: 0px;text-decoration: none;"); // set span formatting
 
   _a.setAttribute('href', "http://perfectworld.vanillaforums.com/categories/" +_content[0]); //add address to link
