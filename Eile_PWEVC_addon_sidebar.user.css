@@ -48,8 +48,8 @@
 		z-index:101;
 		position : absolute;
 		left: -999em;
-		margin-left : 40px;;
-		margin-top : -40px;
+		margin-left : 35px;;
+		margin-top : -45px;
 	}
 	
 #navgame li ul ul { /* third-and-above-level lists */
