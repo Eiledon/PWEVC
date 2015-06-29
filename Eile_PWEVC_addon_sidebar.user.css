@@ -53,7 +53,7 @@
 		width: 46px;
 		w\idth : 46px;;
 		display : block;
-		color : black;
+		/8color : white;*/
 		font-weight : bold;
 		text-decoration : none;
 		background-color : transparent;
@@ -62,7 +62,7 @@
 	}
 	
 #navgame li a:hover {
-		color : white;
+		/*color : white;*/
 		background-color : transparent;
 	}
 	
