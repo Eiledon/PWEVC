@@ -113,7 +113,7 @@ for(var i=0, len=_games.length; i < len; i++){
   _span.setAttribute('class',"spangame"); //apply formatting
   
   // populate link detals  
-  _a.setAttribute('href',"http://perfectworld.vanillaforums.com/categories/" + _arcname);
+  _a.setAttribute('href',"http://perfectworld.vanillaforums.com/categories/" + _category);
   _a.setAttribute('class',"UserLink MItem");
   _a.textContent = "GAME FORUM";
   
@@ -131,7 +131,7 @@ for(var i=0, len=_games.length; i < len; i++){
   _span.setAttribute('class',"spangame"); //apply formatting
   
     // populate link details 
-  _a.setAttribute('href',"http://www.arcgames.com/en/games/" + _category); 
+  _a.setAttribute('href',"http://www.arcgames.com/en/games/" + _arcname); 
   _a.setAttribute('class',"UserLink MItem");
   _a.textContent = "GAME PAGE";
   
