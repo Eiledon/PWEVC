@@ -14,13 +14,15 @@
 	display: block;
 	float: left;
 	margin:0px;
+	margin-bottom: 1px;
+	padding-left:15px;
 	text-decoration: none;
 	background:#222222;
 	width:100px;
 	border-radius:10px;
-	border: 1px solid #444444;
+	border: 1px solid #333333;
 }
-
+/*deprecated next version*/
 .ligame {
 	list-style-type: none;
 	display: inline;
