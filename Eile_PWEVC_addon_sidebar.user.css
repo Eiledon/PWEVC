@@ -34,15 +34,15 @@
 		position : relative;
 		float : left;
 		/*line-height : 1.25em;*/
-		margin-bottom : -1px;
+		margin-bottom : -5px;
 		width:46px;
 	}
 	
 #navgame li ul { /* second-level lists */
 		position : absolute;
 		left: -999em;
-		margin-left : 36px;;
-		margin-top : -1.35em;
+		margin-left : 23px;;
+		margin-top : -12px;
 	}
 	
 #navgame li ul ul { /* third-and-above-level lists */
