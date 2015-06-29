@@ -1,4 +1,4 @@
 # PWEVC
 PWE Vanilla Forum Changes
 
-Install PWE Vanilla Sidebar Addon : https://github.com/Eiledon/PWEVC/blob/master/eile_pwevc_addon_sidebar.js
+Install PWE Vanilla Sidebar Addon : https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.js
