@@ -26,7 +26,7 @@ getCSS = function(url) {
 	_link.setAttribute('type',"text/css");
 	_link.setAttribute('media',"all");
 	_link.setAttribute('href',url);
-	_head.appendChild(link);
+	_head.appendChild(_link);
 };
 
 getCSS("https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.css");
