@@ -42,6 +42,7 @@
 		z-index:101;
 		position : absolute;
 		left: -999em;
+		top: -10px;
 		margin-left : 23px;;
 		margin-top : -50px;
 		border-radius:2px;
