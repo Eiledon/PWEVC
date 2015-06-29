@@ -50,15 +50,15 @@
 	}
 	
 #navgame li a {
-		width: 11em;
-		w\idth : 10em;
+		width: 46px;
+		w\idth : 46px;;
 		display : block;
 		color : black;
 		font-weight : bold;
 		text-decoration : none;
-		background-color : white;
-		border : 1px solid black;
-		padding : 0 0.5em;
+		background-color : transparent;
+		border : 0px solid transparent;
+		padding : 0;
 	}
 	
 #navgame li a:hover {
