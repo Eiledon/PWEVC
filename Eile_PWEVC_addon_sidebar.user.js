@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        PWEVC Game Logo Sidebar
 // @namespace   https://github.com/Eiledon/PWEVC/
-// @downloadURL https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
-// @updateURL  https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
+// @downloadURL https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
+// @updateURL  https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
 // @version    0.1.1
 // @run-at     document-start
 // @description  Adds sidebar with game logos linking to individual categories on pwe vanilla forums
@@ -29,7 +29,7 @@ getCSS = function(url) {
 	_head.appendChild(link);
 };
 
-getCSS("https://raw.githubusercontent.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.css");
+getCSS("https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.css");
 
 // game information - "category name|arc name|game logo image"
 var _games = ["startrekonline|star-trek-online|http://images-cdn.perfectworld.com/arc/b0/f8/b0f828fe91b8db7e4a8bc149fbb61c051429636566.png",
