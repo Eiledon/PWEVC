@@ -3,7 +3,7 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
 // @updateURL  https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
-// @version    0.2
+// @version    0.2.1
 // @description  Adds sidebar with game logos linking to individual categories on pwe vanilla forums
 // @match      http://perfectworld.vanillaforums.com/*
 // @grant       none
