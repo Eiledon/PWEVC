@@ -1,0 +1,16 @@
+.divgame {
+	position:fixed;
+	width:46px;
+	height:auto;
+	top:50px;
+	left:1px; 
+	padding:0px;
+	background:transparent; 
+	border:0px solid transparent; 
+	z-index: 100;
+}
+
+.ligame {
+	list-style-type: none;
+	display: inline;
+}
