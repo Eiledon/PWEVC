@@ -1,3 +1,40 @@
+
+#gameslideout {   
+	position: fixed;  
+	top: 50px;  
+	left: 1;  
+	padding:0px;
+	background:transparent; 
+	border:0px solid transparent; 
+	z-index: 100;
+	-webkit-transition-duration: 0.3s;  
+	-moz-transition-duration: 0.3s;  
+	-o-transition-duration: 0.3s;  
+	transition-duration: 0.3s;
+	
+}
+
+#gameslideout_inner {  
+	position: fixed;  
+	top: 50px;  
+	left: -250px;  
+	-webkit-transition-duration: 0.3s;  
+	-moz-transition-duration: 0.3s;  
+	-o-transition-duration: 0.3s;  
+	transition-duration: 0.3s;
+	
+}
+
+#gameslideout:hover {  
+	left: 250px;
+	
+} 
+
+#gameslideout:hover #gameslideout_inner {  
+	left: 0;
+	
+}
+
 .divgame {
 	position:fixed;
 	width:46px;
