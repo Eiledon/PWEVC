@@ -21,8 +21,8 @@
 	position: fixed;  
 	top: 50px;  
 	left: -250px;  
-	width: 200px;
-	padding: 25px;
+	width: 250px;
+	padding: 5px;
 	background:#2D2F37; 
 	-webkit-transition-duration: 0.3s;  
 	-moz-transition-duration: 0.3s;  
@@ -34,9 +34,9 @@
 }
 		
 #gameslideout_inner .spangame {
-	width: 190px;
+	width: 240px;
 	height: auto;
-	margin-bottom: 6px;
+	margin-bottom: 5px;
 		}
 
 #gameslideout:hover {  
