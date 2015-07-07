@@ -4,13 +4,16 @@
 	top: 50px;  
 	left: 1;  
 	padding:0px;
-	background:transparent; 
+	background:#2D2F37; 
 	border:0px solid transparent; 
 	z-index: 100;
 	-webkit-transition-duration: 0.3s;  
 	-moz-transition-duration: 0.3s;  
 	-o-transition-duration: 0.3s;  
 	transition-duration: 0.3s;
+	-webkit-border-radius: 0 5px 5px 0;
+	-moz-border-radius: 0 5px 5px 0;
+	border-radius: 0 5px 5px 0;
 	
 }
 
@@ -18,12 +21,23 @@
 	position: fixed;  
 	top: 50px;  
 	left: -250px;  
+	width: 200px;
+	padding: 25px;
+	background:#2D2F37; 
 	-webkit-transition-duration: 0.3s;  
 	-moz-transition-duration: 0.3s;  
 	-o-transition-duration: 0.3s;  
 	transition-duration: 0.3s;
-	
+	-webkit-border-radius: 0 0 5px 0;
+	-moz-border-radius: 0 0 5px 0;
+	border-radius: 0 0 5px 0;
 }
+		
+#gameslideout_inner .spangame {
+	width: 190px;
+	height: auto;
+	margin-bottom: 6px;
+		}
 
 #gameslideout:hover {  
 	left: 250px;
