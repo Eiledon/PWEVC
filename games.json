@@ -1,5 +1,5 @@
 {
-  "games":[
+  "games":
     {
       "catname":"startrekonline",
       "arcname":"star-trek-online",
@@ -90,5 +90,4 @@
       "arcname":"war-of-the-immortals",
       "logo":"http://images-cdn.perfectworld.com/arc/1c/a3/1ca3942f422047f4d5fd284a10fe43d41398393797.png"
     }
-  ]
 }
