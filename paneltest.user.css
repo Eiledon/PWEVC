@@ -1,7 +1,7 @@
 #floatnav {
    position: fixed;
-   top: 0;
-   left: 0; }
+   top: 50;
+   left: 1; }
 
 .floatbutton { 
    padding: 5px 30px 5px 15px;
@@ -11,15 +11,18 @@
 .popoutpanel { 
    margin: -50px 0 0 60px; 
    padding: 10px 20px 15px; 
-   width: 400px; }
+   width: 400px; 
+   background:rgba(50,50,50,0.5);
+   border-radius:10px;
+}
 
 div.floatbutton { 
-   opacity: .1; 
-   filter:alpha(opacity=10); }
-
-div.floatbutton:hover { 
    opacity: 1; 
    filter:alpha(opacity=100); }
+
+div.floatbutton:hover { 
+   opacity: .5; 
+   filter:alpha(opacity=50); }
 
 div.floatbutton .popoutpanel { 
    display: none; }
@@ -28,5 +31,5 @@ div.floatbutton:hover .popoutpanel {
    display: block; }
 
 .scrollpanel { 
-   height: 300px; 
+   height: 400px; 
    overflow-y: auto; }
