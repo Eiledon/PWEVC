@@ -16,12 +16,12 @@
    border-radius:15px;
 }
 
-.popoutpanel ul li {
+.gameitem {
    float:left;
    width:150px;
 }
 
-.popoutpanel ul li span{
+.gamelinks{
    margin-top:-10px;
    display : inline-block;
 	font-weight : bold;
