@@ -12,7 +12,7 @@
    margin: -50px 0 0 10px; 
    padding: 10px 20px 15px; 
    width: 600px; 
-   background:rgba(0,0,0,0.5);
+   background:rgba(0,0,0,0.75);
    border-radius:15px;
 }
 
@@ -32,7 +32,7 @@ div.floatbutton .popoutpanel {
    display: none; }
 
 div.floatbutton:hover .popoutpanel { 
-   display: block; }
+   display: inline-block; }
 
 .scrollpanel { 
    height: 400px; 
