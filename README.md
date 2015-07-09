@@ -6,6 +6,16 @@ The Game Sidebar adds an easily accessed panel to PWE Vanilla Forums with links 
 <img src="https://rawgit.com/Eiledon/PWEVC/master/pwevc_gamepanel.jpg">
 
 
+
+<h1>Installation</h1>
+
+How you install user scripts depends on which browser you use. Typically, you will need to install a browser extension. The list below is not an exhaustive list.
+
+Once you have the extension installed you can activate the user script by clicking the following link:
+
+https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
+
+
 <h2><a id="user-content-google-chrome-chromium-and-related" class="anchor" href="#google-chrome-chromium-and-related" aria-hidden="true"><span class="octicon octicon-link"></span></a>Google Chrome, Chromium, and related</h2>
 <ul>
     <li><a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a></li>
