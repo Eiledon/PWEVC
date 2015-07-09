@@ -21,6 +21,17 @@
    width:150px;
 }
 
+.popoutpanel ul li span{
+   margin-top:-10px;
+   display : inline-block;
+	font-weight : bold;
+	font-size:9px;
+	text-decoration : none;
+	background:#000; 
+	border-radius:15px;
+	border: 0px solid transparent;
+}
+
 div.floatbutton { 
    opacity: .5; 
    filter:alpha(opacity=50); }
