@@ -1,6 +1,6 @@
 #floatnav {
    position: fixed;
-   top: 150px;
+   top: 0;
    left: 0; }
 
 .floatbutton { 
@@ -11,7 +11,7 @@
 .popoutpanel { 
    margin: -50px 0 0 60px; 
    padding: 10px 20px 15px; 
-   width: 200px; }
+   width: 400px; }
 
 div.floatbutton { 
    opacity: .1; 
