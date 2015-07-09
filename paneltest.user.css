@@ -16,20 +16,31 @@
    border-radius:15px;
 }
 
+.gamebox {
+	display : inline-block;
+	width: 150px;
+	margin:5px;
+	margin-bottom:-20px;
+	float:left;
+}
+
 .gameitem {
    float:left;
    width:150px;
 }
 
 .gamelinks{
-   margin-top:-10px;
-   display : inline-block;
-	font-weight : bold;
-	font-size:9px;
-	text-decoration : none;
+  display : inline-block;
+  font-weight : bold;
+  font-size:9px;
+  text-decoration : none;
 	background:#000; 
 	border-radius:15px;
 	border: 0px solid transparent;
+	width: 140px;
+	margin-left: 5px;
+	margin-right: 5px;
+	text-align: center;
 }
 
 div.floatbutton { 
