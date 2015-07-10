@@ -3,8 +3,8 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://cdn.rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
 // @updateURL  https://cdn.rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
-// @version    0.3
-// @description  Adds sidebar with game logos in popup window linking to individual categories on pwe vanilla forums
+// @version    0.3.1
+// @description  Adds sidebar with game logos in popup window linking to individual categories on pwe vanilla forums, game home and news page.
 // @match      http://perfectworld.vanillaforums.com/*
 // @grant       none
 // @copyright  2015, Eiledon
@@ -38,6 +38,16 @@ var _gamebutton = $("<img src='http://www.arcgames.com/images/download/logo.png'
 var _gamepopout = $("<div class='popoutpanel'></div>");
 var _gamelist = $("<ul></ul>");
 
+//permanent ARC additions
+var _li = $('<li class="gameitem"></li>');
+    
+//combine each game into main list
+_li.append($('<div class="gamebox"><img width="140" title="ARC" alt="ARC" src="http://images-cdn.perfectworld.com/arcportal_static/images/global/logos.png"></div>'));
+_li.append($('<div class="gamelinks"><a href="https://www.arcgames.com/en/my/account" target="_blank" alt="ARC Profile" title="ARC Profile">ACCOUNT</a>&nbsp;|&nbsp;<a href="https://billing.arcgames.com/en/" target="_blank"  alt="Charge Zen" title="Charge Zen">ZEN</a>&nbsp;|&nbsp;<a href="https://support.arcgames.com/app/home" target="_blank"  alt="ARC Support" title="ARC Support">SUPPORT</a></div>')); 
+_gamelist.append(_li);
+
+
+
 // open and loop through games array to populate inner container with list elements
 $.getJSON('https://rawgit.com/Eiledon/PWEVC/master/games.json', function(json) {
   $.each(json.games, function(_index, _element) {
@@ -56,9 +66,13 @@ $.getJSON('https://rawgit.com/Eiledon/PWEVC/master/games.json', function(json) {
   
     var _li = $('<li class="gameitem"></li>');
     
+      
+      http://www.arcgames.com/en/games/star-trek-online/news
+      
+      
     //combine each game into main list
     _li.append($('<div class="gamebox"><img width="150" title="'+_propername+'" alt="'+_propername+'" src="'+_imgurl+'"></div>'));
-    _li.append($('<div class="gamelinks"><a href="'+_arcurl+'" target="_blank">HOMEPAGE</a>&nbsp;|&nbsp;<a href="'+_caturl+'">FORUM</a></div>')); 
+    _li.append($('<div class="gamelinks"><a href="'+_arcurl+'" target="_blank" title="Visit Game Homepage" alt="Visit Game Homepage">HOME</a>&nbsp;|&nbsp;<a href="'+_arcurl+'/news" target="_blank" title="See Game News" alt="See Game News">NEWS</a>&nbsp;|&nbsp;<a href="'+_caturl+'"  title="Visit Game Forum" alt="Visit Game Forum">FORUM</a></div>')); 
     _gamelist.append(_li);
   });
 });
