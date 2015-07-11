@@ -2,7 +2,7 @@
 // @name        PWEV_DiscussionFilter
 // @namespace   Eiledon
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.1
+// @version     0.2
 // @grant       none
 // ==/UserScript==
 
@@ -17,7 +17,7 @@ var applyFilter = function(){
     "excNew" : "tr.Item.New.ItemDiscussion, tr.Item.Unread.ItemDiscussion:not(tr.Participated)" /*New / Unread Discussion*/ ,
     "excPUnread" : "tr.Participated.Unread" /*Participated Discussion - new content*/ ,
     "excPRead" : "tr.Participated.Read.ItemDiscussion" /*Participated Discussion - no new content*/ ,
-    "excReadNoNew" : "tr.Read.ItemDiscussion" /*Read discussion - no new content*/
+    "excReadNoNew" : "tr.Read.ItemDiscussion:not(tr.Participated)" /*Read discussion - no new content*/
   };
     
   // initialise overall filter string
@@ -58,11 +58,11 @@ var addFilterForm = function(){
   var _form = "<div class=\"postfilter\"><form id=\"postfilter-form\" class=\"postfilter-form\">";
   _form += "<div class=\"postfilter-desc\"><span title=\"Un-check box to hide posts\" alt=\"Un-check box to hide posts\">Show:<span></div>";
   _form += "<input id=\"chk_1\" name=\"chk_1\" class=\"postfilter-chk\" type=\"checkbox\" value=\"Ann\" checked /><label class=\"postfilter-lbl\" for=\"chk_1\">Announcements</label>";
-  _form += "<input id=\"chk_2\" name=\"chk_2\" class=\"postfilter-chk\" type=\"checkbox\" value=\"Poll\" checked /><label class=\"postfilter-lbl\" for=\"chk_2\">Polls</label> | ";
+  _form += "<input id=\"chk_2\" name=\"chk_2\" class=\"postfilter-chk\" type=\"checkbox\" value=\"Poll\" /><label class=\"postfilter-lbl\" for=\"chk_2\">Polls</label> | ";
     _form += "<input id=\"chk_3\" name=\"chk_3\" class=\"postfilter-chk\" type=\"checkbox\" value=\"New\" checked /><label class=\"postfilter-lbl\" for=\"chk_3\">New/Unread</label>";
     _form += "<input id=\"chk_4\" name=\"chk_4\" class=\"postfilter-chk\" type=\"checkbox\" value=\"PUnread\" checked /><label class=\"postfilter-lbl\" for=\"chk_4\">Commented/New</label>";
     _form += "<input id=\"chk_5\" name=\"chk_5\" class=\"postfilter-chk\" type=\"checkbox\" value=\"PRead\" checked /><label class=\"postfilter-lbl\" for=\"chk_5\">Commented/No New</label>";
-    _form += "<input id=\"chk_6\" name=\"chk_6\" class=\"postfilter-chk\" type=\"checkbox\" value=\"ReadNoNew\" checked /><label class=\"postfilter-lbl\" for=\"chk_6\">Read/No New</label>";
+    _form += "<input id=\"chk_6\" name=\"chk_6\" class=\"postfilter-chk\" type=\"checkbox\" value=\"ReadNoNew\" /><label class=\"postfilter-lbl\" for=\"chk_6\">Read/No New</label>";
   _form += "</form></div>";
     
   $("div.PageControls.Top > #PagerBefore").after(_form);
