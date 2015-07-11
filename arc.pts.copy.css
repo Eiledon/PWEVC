@@ -1,0 +1,10 @@
+@namespace url(http://www.w3.org/1999/xhtml);
+
+@-moz-document url("http://www.arcgames.com/en/my/character/copy/co"),  url("http://www.arcgames.com/en/my/character/copy/sto") {
+
+div#js_character_choose dl.dropdown-list {
+height: 150px;
+overflow: auto;
+}
+
+}
