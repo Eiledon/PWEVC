@@ -4,7 +4,7 @@
 // @downloadURL https://cdn.rawgit.com/Eiledon/PWEVC/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://cdn.rawgit.com/Eiledon/PWEVC/master/PWE_Discussion_Manager.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.3.1
+// @version     0.3.2
 // @description  Adds Autopage (Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -17,10 +17,11 @@ var loading = false;
 
 //temporary CSS - will be moved to external CSS file after some testing
 var _css = "";
-_css += ".postfilter { min-width: 900px;	background: rgba(0, 0, 0, 0.3); padding: 2px; margin-right:8px; vertical-align:top; box-shadow: 0px 0px 10px 0px  rgba(255,255,255,0.3); } ";
-_css += ".postfilter-form { vertical-align:top; } ";
+_css += ".postfilter { width: 900px;	background: rgba(0, 0, 0, 0.3); padding: 2px; margin-right:8px; vertical-align:top; box-shadow: 0px 0px 10px 0px  rgba(255,255,255,0.3); } ";
+_css += ".postfilter-form { vertical-align:top; white-space:no-wrap; } ";
 _css += ".postfilter-form > fieldset { border:none; margin:0; } ";
-_css += ".postfilter-grp { border: 1px solid rgba(255,255,255,0.3); margin: 5px; margin-bottom: 10px; padding: 5px; width: 280px; vertical-align:top;} ";
+_css += ".postfilter-grpwrap { border: 1px solid rgba(255,255,255,0.3); margin: 5px; margin-bottom: 10px; vertical-align:top; min-height:140px; } ";
+_css += ".postfilter-grp { padding: 5px; width: 280px; vertical-align:top; } ";
 _css += ".postfilter-controls .postfilter-chk, .postfilter-rdo, .postfilter-lbl { vertical-align:middle; } ";
 _css += ".postfilter-controls > fieldset { border-top:1px solid rgba(255,255,255,0.3); } ";
 _css += ".postfilter-inline { float:left; display:inline-block; } ";
@@ -32,7 +33,7 @@ _css += ".resetDMOptions { color: #fff; border-radius : 5px;  border: 1px solid 
 _css += ".resetDMOptions:hover { box-shadow: 0px 0px 5px  #FFFFFF; } ";
 _css += ".postfilter-chk, .postfilter-rdo, .postfilter-lbl:not(.postfilter-desc), .resetDMOptions { cursor:pointer; } ";
 _css += ".enhance-discussion .SpOptions:before { content: \"\\f146\" !important; color: #69CAFE !important; } ";
-_css += ".discussionManager { min-width: 925px; width: auto !important; } ";
+_css += ".discussionManager { width: 925px; } ";
 _css += "#totopbutton { display:inline-block; position: fixed; bottom: 2px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#toendbutton { display:inline-block; position: fixed; top: 10px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#totopbutton:hover, #toendbutton:hover { opacity: 1; filter:alpha(opacity=100); } ";
@@ -131,11 +132,13 @@ var addCSS = function(){
 var addFilterForm = function(){
    // form opening html
   var _formopen = "<div class=\"discussionManager enhanceDialog \" style=\"margin: 0px auto; display: none;\">";
-  _formopen += "<div class=\"title\"><h1>Discussion Manager</h1><h1></h1></div><div class=\"content\">";
+  _formopen += "<div class=\"title\"><h1>Navigation \& Filters </h1><h1></h1></div><div class=\"content\">";
   _formopen += "<div class=\"postfilter\"><form id=\"postfilter-form\" class=\"postfilter-form\"><fieldset>";
   // form closing html
   var _formclose = "</fieldset></form></div>";
   // section(s) opening html
+  var _wrapopen = "<div class=\"postfilter-grpwrap postfilter-inline\">";
+  var _wrapclose = "</div>";
   var _ffeature = "<div class=\"postfilter-grp postfilter-inline\"><label class=\"postfilter-lbl postfilter-desc\" for=\"opts_feature\">Features: </label><div class=\"postfilter-controls\"><fieldset>";
   var _fdiscussion = "<div class=\"postfilter-grp postfilter-inline\"><label class=\"postfilter-lbl postfilter-desc\" for=\"chks_discussion\">Include By Discussions Type: </label><div class=\"postfilter-controls\"><fieldset>";
   var _fcomment = "<div class=\"postfilter-grp postfilter-inline\"><label class=\"postfilter-lbl postfilter-desc\" for=\"chks_comment\">Include By Comment Status:</label><div class=\"postfilter-controls\"><fieldset>";
@@ -176,12 +179,12 @@ var addFilterForm = function(){
   _fdiscussion += _sectionclose;
   _fcomment += _sectionclose;
   // finalise form html
-  var _form = _formopen +  _ffeature + _fdiscussion + _fcomment + _formclose;
+  var _form = _formopen + _wrapopen + _ffeature + _wrapclose + _wrapopen + _fdiscussion + _fcomment + _wrapclose + _formclose;
   // remove any existing instance of form and append to menu
   $(".discussionManager, .enhance-discussion").remove();
   $(".SiteMenu").append(_form);
   //define menu button, funtion and add to control panel
-  var button = $('<a href="#" class="MeButton FlyoutButton" title="Discussion Manager"><span class="Sprite Sprite16 SpOptions"></span></a>');
+  var button = $('<a href="#" class="MeButton FlyoutButton" title="Navigation & Filters"><span class="Sprite Sprite16 SpOptions"></span></a>');
   var discussionControl = $("<span class='ToggleFlyout enhance-discussion'></span>");
   button.click(function(){
 	  $('.discussionManager').slideToggle();
@@ -317,7 +320,7 @@ var applyFilter = function(){
             pweDiscussionManager.filters[_index].fdefault = "";
           } else {
             pweDiscussionManager.filters[_index].fdefault = "checked" ;
-          }       
+          } 
           return false;
         }
 
