@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name        PWE Discussion Manager
 // @namespace   https://github.com/Eiledon/PWEVC/
-// @downloadURL https://cdn.rawgit.com/Eiledon/PWEVC/master/PWE_Discussion_Manager.user.js
-// @updateURL  https://cdn.rawgit.com/Eiledon/PWEVC/master/PWE_Discussion_Manager.js
+// @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
+// @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
 // @version     0.3.2
 // @description  Adds Autopage (Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
