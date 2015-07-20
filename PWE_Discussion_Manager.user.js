@@ -4,8 +4,8 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.3.2
-// @description  Adds Autopage (Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
+// @version     0.3.3
+// @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
 // ==/UserScript==
@@ -45,7 +45,7 @@ _css += "div.enhanceMeta > span.Tag.QnA-Tag-Question:before { content: \"\\f181\
 _css += "div.enhanceMeta > span.Tag.QnA-Tag-Answered:before { content: \"\\f181\" !important; filter: alpha(opacity=50); -moz-opacity: .5; opacity: .5;} "
 _css += "div.enhanceMeta > span.Tag.QnA-Tag-Accepted:before { content: \"\\f173\" !important; "
 _css += "div.enhanceMeta > span.Tag.Tag-Closed:before { content: \"\\f15e\" !important;} "
-  
+
 //default values
 var pweDiscussionManager = { 
   "features": [
@@ -130,7 +130,7 @@ var addCSS = function(){
 }
 // add filter and settings dialog
 var addFilterForm = function(){
-   // form opening html
+  // form opening html
   var _formopen = "<div class=\"discussionManager enhanceDialog \" style=\"margin: 0px auto; display: none;\">";
   _formopen += "<div class=\"title\"><h1>Navigation \& Filters </h1><h1></h1></div><div class=\"content\">";
   _formopen += "<div class=\"postfilter\"><form id=\"postfilter-form\" class=\"postfilter-form\"><fieldset>";
@@ -146,35 +146,35 @@ var addFilterForm = function(){
   var _sectionclose = "</fieldset></div></div>";
   // generate features section
   $.each(pweDiscussionManager.features, function(_index, _element) {
-     // extract details from settings
-     var _filtername = _element.fname; // e.g "fAnnounce"
-     var _filterdesc = _element.fdesc; // e.g "Announcements"
-     var _filtertype = _element.ftype.toLowerCase(); // e.g "Discussion"
-     var _filterselector = _element.fselector; // e.g "tr.ItemDiscussion:has(span.Tag-Announcement)"
-     var _filterdefault = _element.fdefault; // e.g "checked" 
-	 // define this filter html
-     var _thisfilter = "<div class=\"postfilter-block\"><label class=\"postfilter-lbl\" for=\"opt_"+ _filtername + "\">";
-     _thisfilter += "<input class=\"postfilter-chk\" name=\"opts_" + _filtertype + "\" id=\"opt_"+ _filtername + "\" value=\"" + _filterselector + "\" type=\"checkbox\" " + _filterdefault + " />&nbsp;" + _filterdesc + "</label></div>";
-     // combine with existing section html
-     _ffeature += _thisfilter; 
-   });
-   // close off this section
-   _ffeature += "<div class=\"postfilter-block\"><input class=\"resetDMOptions\" type=\"button\" value=\"Reset to Default\" ></div>" + _sectionclose;
-   // generate filter section(s)
-   $.each(pweDiscussionManager.filters, function(_index, _element) {
-     // extract details from settings
-     var _filtername = _element.fname; // e.g "fAnnounce"
-     var _filterdesc = _element.fdesc; // e.g "Announcements"
-     var _filtertype = _element.ftype.toLowerCase(); // e.g "Discussion"
-     var _filterselector = _element.fselector; // e.g "tr.ItemDiscussion:has(span.Tag-Announcement)"
-     var _filterdefault = _element.fdefault; // e.g "checked"
-     // define this filter html
-     var _thisfilter = "<div class=\"postfilter-block\"><label class=\"postfilter-lbl\" for=\"chk_"+ _filtername + "\">";
-     _thisfilter += "<input class=\"postfilter-chk\" name=\"chks_" + _filtertype + "\" id=\"chk_"+ _filtername + "\" value=\"" + _filterselector + "\" type=\"checkbox\" " + _filterdefault + " />&nbsp;" + _filterdesc + "</label></div>";
-     // combine with appropriate existing section html
-     if (_filtertype == "discussion") { _fdiscussion += _thisfilter; }
-     if (_filtertype == "comment") { _fcomment += _thisfilter; }
-    });
+    // extract details from settings
+    var _filtername = _element.fname; // e.g "fAnnounce"
+    var _filterdesc = _element.fdesc; // e.g "Announcements"
+    var _filtertype = _element.ftype.toLowerCase(); // e.g "Discussion"
+    var _filterselector = _element.fselector; // e.g "tr.ItemDiscussion:has(span.Tag-Announcement)"
+    var _filterdefault = _element.fdefault; // e.g "checked" 
+    // define this filter html
+    var _thisfilter = "<div class=\"postfilter-block\"><label class=\"postfilter-lbl\" for=\"opt_"+ _filtername + "\">";
+    _thisfilter += "<input class=\"postfilter-chk\" name=\"opts_" + _filtertype + "\" id=\"opt_"+ _filtername + "\" value=\"" + _filterselector + "\" type=\"checkbox\" " + _filterdefault + " />&nbsp;" + _filterdesc + "</label></div>";
+    // combine with existing section html
+    _ffeature += _thisfilter; 
+  });
+  // close off this section
+  _ffeature += "<div class=\"postfilter-block\"><input class=\"resetDMOptions\" type=\"button\" value=\"Reset to Default\" ></div>" + _sectionclose;
+  // generate filter section(s)
+  $.each(pweDiscussionManager.filters, function(_index, _element) {
+    // extract details from settings
+    var _filtername = _element.fname; // e.g "fAnnounce"
+    var _filterdesc = _element.fdesc; // e.g "Announcements"
+    var _filtertype = _element.ftype.toLowerCase(); // e.g "Discussion"
+    var _filterselector = _element.fselector; // e.g "tr.ItemDiscussion:has(span.Tag-Announcement)"
+    var _filterdefault = _element.fdefault; // e.g "checked"
+    // define this filter html
+    var _thisfilter = "<div class=\"postfilter-block\"><label class=\"postfilter-lbl\" for=\"chk_"+ _filtername + "\">";
+    _thisfilter += "<input class=\"postfilter-chk\" name=\"chks_" + _filtertype + "\" id=\"chk_"+ _filtername + "\" value=\"" + _filterselector + "\" type=\"checkbox\" " + _filterdefault + " />&nbsp;" + _filterdesc + "</label></div>";
+    // combine with appropriate existing section html
+    if (_filtertype == "discussion") { _fdiscussion += _thisfilter; }
+    if (_filtertype == "comment") { _fcomment += _thisfilter; }
+  });
   // close of filter section(s)
   _fdiscussion += _sectionclose;
   _fcomment += _sectionclose;
@@ -187,15 +187,15 @@ var addFilterForm = function(){
   var button = $('<a href="#" class="MeButton FlyoutButton" title="Navigation & Filters"><span class="Sprite Sprite16 SpOptions"></span></a>');
   var discussionControl = $("<span class='ToggleFlyout enhance-discussion'></span>");
   button.click(function(){
-	  $('.discussionManager').slideToggle();
-	  $('.discussionManager').siblings('.enhanceDialog:visible').detach().insertAfter($('.discussionManager')).slideToggle();
- });
- $(".MeMenu").append(discussionControl.append(button));
- //apply function to form controls
+    $('.discussionManager').slideToggle();
+    $('.discussionManager').siblings('.enhanceDialog:visible').detach().insertAfter($('.discussionManager')).slideToggle();
+  });
+  $(".MeMenu").append(discussionControl.append(button));
+  //apply function to form controls
   $('input[type="checkbox"][name^="chks_"].postfilter-chk').click(function(){ applyFilter(); });
   $('input[type="checkbox"][name^="opts_"].postfilter-chk').click(function(){ applyOptions(); });
   $('input[type="button"].resetDMOptions').click(function(){ resetDMOptions(); });
- 
+
   return false;
 };
 
@@ -216,10 +216,10 @@ var addScrollButtons = function(){
 // update and apply options as determined by form check boxes
 var applyOptions = function(){
 
-   // parse feature checkboxes for unchecked
+  // parse feature checkboxes for unchecked
   $('input[type="checkbox"][name^="opts_"].postfilter-chk').each(function(index) {     
     var $this = $(this);
-	//update appropriate feature value in settings based on checkbox status
+    //update appropriate feature value in settings based on checkbox status
     $.each(pweDiscussionManager.features, function(_index, _element) {
       if ($this.attr("id").replace('opt_','') == _element.fname) { 
         if ($this.is(":not(:checked)")){ 
@@ -234,11 +234,11 @@ var applyOptions = function(){
     // set scrollbutton status
     if ( $this.attr("id") ==  "opt_fScrollButtons")  {
       if ($this.is(":not(:checked)")){  
-		// if not selected remove scroll to buttons
+        // if not selected remove scroll to buttons
         $("div[id^='to']:has(span[id^='ScrollTo'])").remove();
         console.log ('Scroll Buttons Disabled');
       } else {
-		// if selected add scroll to buttons
+        // if selected add scroll to buttons
         addScrollButtons();
         console.log ('Scroll Buttons Enabled');
       }    
@@ -257,7 +257,7 @@ var applyOptions = function(){
         $(window).unbind('scroll');
         $(window).scroll(function() {
           triggernextpage();      
-		    
+
           //var nearToBottom = 75; // how far from the bottom before event is actions
           //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
           //if($(window).scrollTop() == $(document).height() - $(window).height()) {  
@@ -271,12 +271,12 @@ var applyOptions = function(){
     // set filter status
     if ( $this.attr("id") ==  "opt_fFilter")  {
       if ($this.is(":not(:checked)")){
-		//if not selected disable all filter checkboxes and show any hidden threads
+        //if not selected disable all filter checkboxes and show any hidden threads
         $('input[type="checkbox"][name^="chks_"].postfilter-chk').prop( "disabled", true );
         $("tr.ItemDiscussion").show();
         console.log ('Filters Disabled');
       } else {
-		//if selected enable all filter checkboxes and apply filter to current page
+        //if selected enable all filter checkboxes and apply filter to current page
         $('input[type="checkbox"][name^="chks_"].postfilter-chk').prop( "disabled", false);
         applyFilter();
         console.log ('Filters Enabled');
@@ -304,16 +304,16 @@ var applyFilter = function(){
 
   //only continue if filtering is active
   if (_filteractive) { 
-   
+
     var _postfilter = ""; // initialise overall filter string
-	var _post = "tr.ItemDiscussion"; // main item to be filtered
-    
-	// parse checkboxes for unchecked
+    var _post = "tr.ItemDiscussion"; // main item to be filtered
+
+    // parse checkboxes for unchecked
     $('input[type="checkbox"][name^="chks_"].postfilter-chk').each(function(index) {  
 
       //$('input[type="checkbox"][name^="chks_"].postfilter-chk:not(:checked)').each(function(index) {     
       var $this = $(this); // filter being applied
-	  //update appropriate filter value in settings based on checkbox status	
+      //update appropriate filter value in settings based on checkbox status	
       $.each(pweDiscussionManager.filters, function(_index, _element) {
         if ($this.attr("id").replace('chk_','') == _element.fname) { 
           if ($this.is(":not(:checked)")){ 
@@ -325,7 +325,7 @@ var applyFilter = function(){
         }
 
       });
-	  // generate selector string for items to be hidden
+      // generate selector string for items to be hidden
       if ($this.is(":not(:checked)")){
         // insert seperator for selector filter where multiple exlusions
         if ($('input[type="checkbox"][name^="chks_"].postfilter-chk:not(:checked)').index($this) > 0) { _postfilter += ", "; }  
@@ -338,16 +338,16 @@ var applyFilter = function(){
 
     $(_post).show(); //show all categories first
     $(_postfilter).hide(); // hide unchecked categories
-	// save any filter changes
+    // save any filter changes
     update();  
   }
 };
 
 // wrapper to manage excessive on scroll triggering
 var triggernextpage = function() {
-  
+
   var nearToBottom = 50; // how far from the bottom before event is actioned
-          //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
+  //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
   var st = $(document).scrollTop();
 
   if(Math.abs(lastScrollTop - st) <= delta)
@@ -357,9 +357,9 @@ var triggernextpage = function() {
   if (st > lastScrollTop){
     // check for processing in progress
     if (loading == false) {
-      
+
       var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments
-      
+
       //determine page type and define variables 
       if ( $( "table.DataTable.DiscussionsTable" ).length ) { 
         _type = 1;
@@ -370,8 +370,19 @@ var triggernextpage = function() {
         _type = 2;
         var _element = 'h2.CommentHeading';
         var _containerclass = 'div.CommentsWrap';
-      }   
-      
+      } 
+      if ( $( "ol.DataList.DataList-Search" ).length ) {
+        var _type = 3;
+        var _element = 'h2.CommentHeading';
+        var _containerclass = 'div.Column.ContentColumn'; 
+
+        //insert initial header for search page parsing
+        if ( $('div[id^="pageadd_"]').length == 0 && $('h2.CommentHeading').length == 0 ) {
+          //insert page 1 header for tracking
+          $( "ol.DataList.DataList-Search").first().before('<h2 class="CommentHeading">Page ' + parseInt($("#PagerBefore a.Highlight").text(),10) + '</h2>');
+        }
+      }
+
       // if no page type set cancel operation
       if (_type == 0) return;
 
@@ -397,7 +408,6 @@ var getnextpage = function(){
   var _id =""; // reset id name
   var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments
   var _lastpage = parseInt($("#PagerBefore a.LastPage").text(),10);
-
   //determine page type and define variables
   if ( $( "table.DataTable.DiscussionsTable" ).length ) {
     //categories & discussions pages discussion lists
@@ -417,30 +427,51 @@ var getnextpage = function(){
     var _splitend = '<div class="P PagerWrap">';
     var _pagetitle = 'h2.CommentHeading';
   } 
+  if ( $( "ol.DataList.DataList-Search" ).length ) {
+    // search lists
+    var _type = 3;
+    var _insertbefore = "div.PageControls.Bottom";
+    var _dataload = ".html .DataList";
+    var _splitstart = '<ol id=';
+    var _splitend = '<div class="PageControls Bottom">';
+    var _pagetitle = '';
+  }
+
+
   // if no page type set cancel operation
   if (_type == 0) return false;
 
   var _oldurl = _url; // store old url
   // if not first page inserted
-  if ( _url.length != 0 ) {
+  if ( $('div[id^="pageadd_"]').length > 0 ) {
+    var regex = new RegExp( "pageadd_", 'g');
+    _page = parseInt($('div[id^="pageadd_"]').last().attr('id').replace(/\D/g,''));
 
-    output = _oldurl.split(/[, ]+/).pop(); //grab page reference from old url
-    _page = parseInt(_oldurl.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract last page number from url as integer
-    _newpage = _page + 1; //increment page
+    _newpage = _page + 1; //increment page   
 
-    //replace the old page number in the url with the new page number
-    var regex = new RegExp( "/p"+_page, 'g');
-    _url = _oldurl.replace(regex, "/p" + _newpage);
+    if (_type == 3){
+      var regex = new RegExp( "Page=p"+_page, 'g');
+      _url = _oldurl.replace(regex, "Page=p" + _newpage); //replace the old page number in the url with the new page number 
+    } else {
+      var regex = new RegExp( "/p"+_page, 'g');
+      _url = _oldurl.replace(regex, "/p" + _newpage); //replace the old page number in the url with the new page number 
+    } 
 
   } else { 
-    // if first page inserted 
+    // if first page inserted     
     _url = $("#PagerBefore a.Next").attr("href"); //get page details from pager element next button
-    _newpage = parseInt(_url.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer
+
+    if (_type == 3) { 
+      _newpage = parseInt(_url.substring( _url.indexOf('?Page=') + 6, _url.indexOf('&')).split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
+    } else {   
+      _newpage = parseInt(_url.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
+    }
   }
+  // console.log(_url);
   // check not past last page
   if (_newpage <= _lastpage ) {
+    _id = "pageadd_" + _newpage;
 
-    _id = "pageadd_" + _url.split(/[\/ ]+/).pop(); //generate id name for new container element
     $('#'+ _id).remove(); //ensure no duplicates for each page 
     $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertbefore); //insert before bottom pager controls
 
@@ -452,8 +483,8 @@ var getnextpage = function(){
     // load next page into hidden container while processing it
     $content.load( _url + _dataload , function (response, status, xhr) {
       console.log("Load Status: " + status); //troubleshooting
-      var _fullPage = response; //store response in variable
 
+      var _fullPage = response; //store response in variable
       // extract required elements using defined start and end strings
       var _newcontent =  _fullPage.substring( _fullPage.indexOf(_splitstart), _fullPage.indexOf(_splitend)) ; 
       $content.html(_newcontent); //update container to new page extract
@@ -465,12 +496,15 @@ var getnextpage = function(){
       }
       // change title at top of section from Discussions to Page # ( # Threads) format
       $content.find( _pagetitle ).first().text("Page " + parseInt(_id.split(/[_ ]+/).pop().replace(/\D/g,'')) + _pageposts );
-      applyFilter(); //reapply current filter
+
+      if (_type == 3) { $content.prepend('<h2 class="CommentHeading">Page ' + _newpage + '</h2>'); }   
+
+      if  ( _type == 1 )  { applyFilter();  } //reapply current filter
       $content.show(); //unhide container
 
     }); 
   }
-}  
+}
 
 
 // function to reset user experience to default plug in values - also useful when major update to filter definitions in code
@@ -486,35 +520,35 @@ var resetDMOptions = function () {
 /* cloned from asterelle with minor changes */
 
 var mergeData = function(to, from, allowAddKeys) {
-	if (from == null) {
-		return;
-	}
-	for (var key in from) {
-		if (typeof from[key] == 'object' && key in to) 
-			mergeData(to[key], from[key]);
-		else if (key in to || allowAddKeys) 
-			to[key] = from[key];
-	}
+  if (from == null) {
+    return;
+  }
+  for (var key in from) {
+    if (typeof from[key] == 'object' && key in to) 
+      mergeData(to[key], from[key]);
+    else if (key in to || allowAddKeys) 
+      to[key] = from[key];
+  }
 };
 
 var update = function() {
-	saveSettings();
+  saveSettings();
 };
 
 // amdended settings names
 var saveSettings = function(){
-	localStorage["pweDiscussionManagerStore"] =  JSON.stringify(pweDiscussionManager);
+  localStorage["pweDiscussionManagerStore"] =  JSON.stringify(pweDiscussionManager);
   //console.log(JSON.stringify(pweDiscussionManager));
 };
 
 //amended settings names
 var getSettings = function() {
-	var savedSettingsJSON = localStorage["pweDiscussionManagerStore"];
-	if (savedSettingsJSON) {
-		var savedSettings = JSON.parse(savedSettingsJSON);
-			mergeData(pweDiscussionManager.features, savedSettings.features, true);
-			mergeData(pweDiscussionManager.filters, savedSettings.filters, false);		
-	}
+  var savedSettingsJSON = localStorage["pweDiscussionManagerStore"];
+  if (savedSettingsJSON) {
+    var savedSettings = JSON.parse(savedSettingsJSON);
+    mergeData(pweDiscussionManager.features, savedSettings.features, true);
+    mergeData(pweDiscussionManager.filters, savedSettings.filters, false);		
+  }
 };
 
 /* end of section cloned from asterelle  */
@@ -534,5 +568,5 @@ $( document ).ready(function() {
   getSettings();
   addFilterForm();
   applyOptions();
-   
+
 });
