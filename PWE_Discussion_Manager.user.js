@@ -502,7 +502,7 @@ var getnextpage = function(){
 
         if  ( _type == 1 )  { applyFilter();  } //reapply current filter
         $content.show(); //unhide container
-
+        $(document).trigger('PageLoaded', [$content]);
       }); 
     }
   }
