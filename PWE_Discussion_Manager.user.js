@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.3.3
+// @version     0.3.5
 // @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -13,7 +13,6 @@
 var _sep = "_" ;
 var _url = "";
 var lastScrollTop = 0, delta = 5;
-var loading = false;
 
 //temporary CSS - will be moved to external CSS file after some testing
 var _css = "";
@@ -255,14 +254,10 @@ var applyOptions = function(){
         //if selected unbind and reapply autopage on scroll event
         _url = ""; //reset page position
         $(window).unbind('scroll');
-        $(window).scroll(function() {
-          triggernextpage();      
-
-          //var nearToBottom = 75; // how far from the bottom before event is actions
-          //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
-          //if($(window).scrollTop() == $(document).height() - $(window).height()) {  
-          //  getnextpage();     
-          //}
+        $(window).data('loading',false).scroll(function() {
+          
+         triggernextpage();
+                
         });
         console.log ('Autopage Enabled');
       }    
@@ -343,8 +338,12 @@ var applyFilter = function(){
   }
 };
 
+
 // wrapper to manage excessive on scroll triggering
 var triggernextpage = function() {
+
+  //if a page is already loading skip trigger
+  if ($(window).data('loading') == true) return;
 
   var nearToBottom = 50; // how far from the bottom before event is actioned
   //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
@@ -356,9 +355,9 @@ var triggernextpage = function() {
   // check for downscroll only
   if (st > lastScrollTop){
     // check for processing in progress
-    if (loading == false) {
+    if ($(window).data('loading') == false) {
 
-      var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments
+      var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments, 3 = Search Results
 
       //determine page type and define variables 
       if ( $( "table.DataTable.DiscussionsTable" ).length ) { 
@@ -383,18 +382,21 @@ var triggernextpage = function() {
         }
       }
 
-      // if no page type set cancel operation
-      if (_type == 0) return;
+      // only continue if value page type
+      if (_type > 0) {
 
-      var $post = $( _containerclass + ',div[id^="pageadd_"]').last().find( _element ); // find header in last 'page' loaded
-      if ($post.is(":visible")) {      
-        var position = parseInt( $post.position().top - $(window).scrollTop(),10); // determine relation to top of window for trigger
-        // only load next page if selected element has just scrolled off top of page OR scrolled near to bottom
-        if ( position <= 0 || $(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom )  {
-          loading = true;
-          getnextpage();
-          loading = false;
-        }  
+        var $post = $( _containerclass + ',div[id^="pageadd_"]').last().find( _element ); // find header in last 'page' loaded
+        if ($post.is(":visible")) {      
+          var position = parseInt( $post.position().top - $(window).scrollTop(),10); // determine relation to top of window for trigger
+          // only load next page if selected element has just scrolled off top of page OR scrolled near to bottom
+          if ( position <= 0 || $(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom )  {  
+            // set loading flag true to prevent further triggers
+            $(window).data('loading', true);
+            getnextpage(); // call next page
+            // reset loading flag to false to allow further loading
+            $(window).data('loading', false);
+          }  
+        }
       }
     }
   }
@@ -437,72 +439,72 @@ var getnextpage = function(){
     var _pagetitle = '';
   }
 
+  // only continue if value page type
+  if (_type > 0) {
 
-  // if no page type set cancel operation
-  if (_type == 0) return false;
+    var _oldurl = _url; // store old url
+    // if not first page inserted
+    if ( $('div[id^="pageadd_"]').length > 0 ) {
+      var regex = new RegExp( "pageadd_", 'g');
+      _page = parseInt($('div[id^="pageadd_"]').last().attr('id').replace(/\D/g,''));
 
-  var _oldurl = _url; // store old url
-  // if not first page inserted
-  if ( $('div[id^="pageadd_"]').length > 0 ) {
-    var regex = new RegExp( "pageadd_", 'g');
-    _page = parseInt($('div[id^="pageadd_"]').last().attr('id').replace(/\D/g,''));
+      _newpage = _page + 1; //increment page   
 
-    _newpage = _page + 1; //increment page   
-
-    if (_type == 3){
-      var regex = new RegExp( "Page=p"+_page, 'g');
-      _url = _oldurl.replace(regex, "Page=p" + _newpage); //replace the old page number in the url with the new page number 
-    } else {
-      var regex = new RegExp( "/p"+_page, 'g');
-      _url = _oldurl.replace(regex, "/p" + _newpage); //replace the old page number in the url with the new page number 
-    } 
-
-  } else { 
-    // if first page inserted     
-    _url = $("#PagerBefore a.Next").attr("href"); //get page details from pager element next button
-
-    if (_type == 3) { 
-      _newpage = parseInt(_url.substring( _url.indexOf('?Page=') + 6, _url.indexOf('&')).split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
-    } else {   
-      _newpage = parseInt(_url.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
-    }
-  }
-  // console.log(_url);
-  // check not past last page
-  if (_newpage <= _lastpage ) {
-    _id = "pageadd_" + _newpage;
-
-    $('#'+ _id).remove(); //ensure no duplicates for each page 
-    $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertbefore); //insert before bottom pager controls
-
-    var $content = $("#" + _id); //store container as variable to reduce calls
-    $content.hide(); // hide container while work going on
-
-    console.log ("Loading:" + _url); //troubleshooting
-
-    // load next page into hidden container while processing it
-    $content.load( _url + _dataload , function (response, status, xhr) {
-      console.log("Load Status: " + status); //troubleshooting
-
-      var _fullPage = response; //store response in variable
-      // extract required elements using defined start and end strings
-      var _newcontent =  _fullPage.substring( _fullPage.indexOf(_splitstart), _fullPage.indexOf(_splitend)) ; 
-      $content.html(_newcontent); //update container to new page extract
-      // calculate thread count for discussions pages
-      if ($content.find('tr.ItemDiscussion').length > 0 ) { 
-        var _pageposts =  " (" + $content.find('tr.ItemDiscussion').length + " Threads)";
+      if (_type == 3){
+        var regex = new RegExp( "Page=p"+_page, 'g');
+        _url = _oldurl.replace(regex, "Page=p" + _newpage); //replace the old page number in the url with the new page number 
       } else {
-        var _pageposts = ""; 
+        var regex = new RegExp( "/p"+_page, 'g');
+        _url = _oldurl.replace(regex, "/p" + _newpage); //replace the old page number in the url with the new page number 
+      } 
+
+    } else { 
+      // if first page inserted     
+      _url = $("#PagerBefore a.Next").attr("href"); //get page details from pager element next button
+
+      if (_type == 3) { 
+        _newpage = parseInt(_url.substring( _url.indexOf('?Page=') + 6, _url.indexOf('&')).split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
+      } else {   
+        _newpage = parseInt(_url.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
       }
-      // change title at top of section from Discussions to Page # ( # Threads) format
-      $content.find( _pagetitle ).first().text("Page " + parseInt(_id.split(/[_ ]+/).pop().replace(/\D/g,'')) + _pageposts );
+    }
+    // console.log(_url);
+    // check not past last page
+    if (_newpage <= _lastpage ) {
+      _id = "pageadd_" + _newpage;
 
-      if (_type == 3) { $content.prepend('<h2 class="CommentHeading">Page ' + _newpage + '</h2>'); }   
+      $('#'+ _id).remove(); //ensure no duplicates for each page 
+      $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertbefore); //insert before bottom pager controls
 
-      if  ( _type == 1 )  { applyFilter();  } //reapply current filter
-      $content.show(); //unhide container
+      var $content = $("#" + _id); //store container as variable to reduce calls
+      $content.hide(); // hide container while work going on
 
-    }); 
+      console.log ("Loading:" + _url); //troubleshooting
+
+      // load next page into hidden container while processing it
+      $content.load( _url + _dataload , function (response, status, xhr) {
+        console.log("Load Status: " + status); //troubleshooting
+
+        var _fullPage = response; //store response in variable
+        // extract required elements using defined start and end strings
+        var _newcontent =  _fullPage.substring( _fullPage.indexOf(_splitstart), _fullPage.indexOf(_splitend)) ; 
+        $content.html(_newcontent); //update container to new page extract
+        // calculate thread count for discussions pages
+        if ($content.find('tr.ItemDiscussion').length > 0 ) { 
+          var _pageposts =  " (" + $content.find('tr.ItemDiscussion').length + " Threads)";
+        } else {
+          var _pageposts = ""; 
+        }
+        // change title at top of section from Discussions to Page # ( # Threads) format
+        $content.find( _pagetitle ).first().text("Page " + parseInt(_id.split(/[_ ]+/).pop().replace(/\D/g,'')) + _pageposts );
+
+        if (_type == 3) { $content.prepend('<h2 class="CommentHeading">Page ' + _newpage + '</h2>'); }   
+
+        if  ( _type == 1 )  { applyFilter();  } //reapply current filter
+        $content.show(); //unhide container
+
+      }); 
+    }
   }
 }
 
