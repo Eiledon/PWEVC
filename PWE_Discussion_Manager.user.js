@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.3.7
+// @version     0.3.7.1
 // @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -13,6 +13,7 @@
 var _sep = "_" ;
 var _url = "";
 var lastScrollTop = 0, delta = 5;
+var triggerdelay = 500;
 
 //temporary CSS - will be moved to external CSS file after some testing
 var _css = "";
@@ -252,7 +253,7 @@ var applyOptions = function(){
         //if selected unbind and reapply autopage on scroll event
         _url = ""; //reset page position
         $(window).unbind('scroll');
-        $(window).data('loading',false).scroll( debounce(triggernextpage, 250) );
+        $(window).data('loading',false).scroll( debounce(triggernextpage, triggerdelay) );
         console.log ('Autopage Enabled');
       }    
     }
