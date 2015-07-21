@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.3.6
+// @version     0.3.7
 // @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -37,13 +37,13 @@ _css += "#totopbutton { display:inline-block; position: fixed; bottom: 2px;   ri
 _css += "#toendbutton { display:inline-block; position: fixed; top: 10px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#totopbutton:hover, #toendbutton:hover { opacity: 1; filter:alpha(opacity=100); } ";
 _css += "#totopbutton .navbutton, #toendbutton .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:default;} ";
-_css += ".enhanceMeta { display:inline-block; float:left; margin-right:5px; margin-left:-5px; min-width:30px; min-height:16px;} "
-_css += ".enhanceMeta .Tag { font-family:'vanillicon' !important; font-size:20px; }"
-_css += "div.enhanceMeta > span.Tag.Tag-Announcement:before { content: \"\\f15c\" !important;} "
-_css += "div.enhanceMeta > span.Tag.QnA-Tag-Question:before { content: \"\\f181\" !important;} "
-_css += "div.enhanceMeta > span.Tag.QnA-Tag-Answered:before { content: \"\\f181\" !important; filter: alpha(opacity=50); -moz-opacity: .5; opacity: .5;} "
-_css += "div.enhanceMeta > span.Tag.QnA-Tag-Accepted:before { content: \"\\f173\" !important; "
-_css += "div.enhanceMeta > span.Tag.Tag-Closed:before { content: \"\\f15e\" !important;} "
+_css += ".enhanceMeta { display:inline-block; float:left; margin-right:5px; margin-left:-5px; min-width:30px; min-height:16px;} ";
+_css += ".enhanceMeta .Tag { font-family:'vanillicon' !important; font-size:20px; }";
+_css += "div.enhanceMeta > span.Tag.Tag-Announcement:before { content: \"\\f15c\" !important;} ";
+_css += "div.enhanceMeta > span.Tag.QnA-Tag-Question:before { content: \"\\f181\" !important;} ";
+_css += "div.enhanceMeta > span.Tag.QnA-Tag-Answered:before { content: \"\\f181\" !important; filter: alpha(opacity=50); -moz-opacity: .5; opacity: .5;} ";
+_css += "div.enhanceMeta > span.Tag.QnA-Tag-Accepted:before { content: \"\\f173\" !important; ";
+_css += "div.enhanceMeta > span.Tag.Tag-Closed:before { content: \"\\f15e\" !important;} ";
 
 //default values
 var pweDiscussionManager = { 
@@ -124,14 +124,12 @@ var pweDiscussionManager = {
 };
 
 // insert code generates css style to head
-var addCSS = function(){
-  $("<style type='text/css'>" + _css + " </style>").appendTo("head");
-}
+var addCSS = function(){ $("<style type='text/css'>" + _css + " </style>").appendTo("head"); };
 // add filter and settings dialog
 var addFilterForm = function(){
   // form opening html
   var _formopen = "<div class=\"discussionManager enhanceDialog \" style=\"margin: 0px auto; display: none;\">";
-  _formopen += "<div class=\"title\"><h1>Navigation \& Filters </h1><h1></h1></div><div class=\"content\">";
+  _formopen += "<div class=\"title\"><h1>Navigation & Filters </h1><h1></h1></div><div class=\"content\">";
   _formopen += "<div class=\"postfilter\"><form id=\"postfilter-form\" class=\"postfilter-form\"><fieldset>";
   // form closing html
   var _formclose = "</fieldset></form></div>";
@@ -209,7 +207,7 @@ var addScrollButtons = function(){
   //define functions
   $('#ScrollToTop').click(function(){ $("html, body").animate({ scrollTop: 0 }, "fast"); });
   $('#ScrollToBottom').click(function(){ $("html, body").animate({ scrollTop: $(document).height() }, "fast"); });
-}
+};
 
 
 // update and apply options as determined by form check boxes
@@ -254,11 +252,7 @@ var applyOptions = function(){
         //if selected unbind and reapply autopage on scroll event
         _url = ""; //reset page position
         $(window).unbind('scroll');
-        $(window).data('loading',false).scroll(function() {
-          
-         triggernextpage();
-                
-        });
+        $(window).data('loading',false).scroll( debounce(triggernextpage, 250) );
         console.log ('Autopage Enabled');
       }    
     }
@@ -339,11 +333,31 @@ var applyFilter = function(){
 };
 
 
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};
+
+
 // wrapper to manage excessive on scroll triggering
 var triggernextpage = function() {
 
   //if a page is already loading skip trigger
-  if ($(window).data('loading') == true) return;
+  if ($(window).data('loading')) return;
 
   var nearToBottom = 50; // how far from the bottom before event is actioned
   //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
@@ -486,8 +500,10 @@ var getnextpage = function(){
         console.log("Load Status: " + status); //troubleshooting
 
         var _fullPage = response; //store response in variable
+        //console.log(_fullPage);
         // extract required elements using defined start and end strings
         var _newcontent =  _fullPage.substring( _fullPage.indexOf(_splitstart), _fullPage.indexOf(_splitend)) ; 
+        //console.log(_newcontent);
         $content.html(_newcontent); //update container to new page extract
         // calculate thread count for discussions pages
         if ($content.find('tr.ItemDiscussion').length > 0 ) { 
