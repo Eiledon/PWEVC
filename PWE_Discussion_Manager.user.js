@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.3.7.1
+// @version     0.4
 // @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -38,13 +38,6 @@ _css += "#totopbutton { display:inline-block; position: fixed; bottom: 2px;   ri
 _css += "#toendbutton { display:inline-block; position: fixed; top: 10px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#totopbutton:hover, #toendbutton:hover { opacity: 1; filter:alpha(opacity=100); } ";
 _css += "#totopbutton .navbutton, #toendbutton .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:default;} ";
-_css += ".enhanceMeta { display:inline-block; float:left; margin-right:5px; margin-left:-5px; min-width:30px; min-height:16px;} ";
-_css += ".enhanceMeta .Tag { font-family:'vanillicon' !important; font-size:20px; }";
-_css += "div.enhanceMeta > span.Tag.Tag-Announcement:before { content: \"\\f15c\" !important;} ";
-_css += "div.enhanceMeta > span.Tag.QnA-Tag-Question:before { content: \"\\f181\" !important;} ";
-_css += "div.enhanceMeta > span.Tag.QnA-Tag-Answered:before { content: \"\\f181\" !important; filter: alpha(opacity=50); -moz-opacity: .5; opacity: .5;} ";
-_css += "div.enhanceMeta > span.Tag.QnA-Tag-Accepted:before { content: \"\\f173\" !important; ";
-_css += "div.enhanceMeta > span.Tag.Tag-Closed:before { content: \"\\f15e\" !important;} ";
 
 //default values
 var pweDiscussionManager = { 
@@ -421,48 +414,42 @@ var triggernextpage = function() {
 
 // autopager function main code
 var getnextpage = function(){
-
-  var _id =""; // reset id name
+  var _id = ""; //reset id
   var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments
   var _lastpage = parseInt($("#PagerBefore a.LastPage").text(),10);
   //determine page type and define variables
   if ( $( "table.DataTable.DiscussionsTable" ).length ) {
     //categories & discussions pages discussion lists
     var _type = 1;
-    var _insertbefore = ".PageControls.Bottom";
-    var _dataload = ".html .DataTable";
-    var _splitstart = '<table class="DataTable DiscussionsTable">';
-    var _splitend = '</table>';
-    var _pagetitle = 'td.DiscussionName';
+    var _insertPoint = ".PageControls.Bottom";
+    var _titleElement = 'td.DiscussionName';
+    var _testElement = 'tr[id^="Discussion_"]';
+    var _fromElement = "table.DataTable.DiscussionsTable";
   } 
   if ( $( "ul.MessageList.DataList.Comments" ).length ) {
     // discussion comments lists
     var _type = 2;
-    var _insertbefore = "div.P.PagerWrap:has(div#PagerAfter)";
-    var _dataload = ".html .DataBox";
-    var _splitstart = '<div class="DataBox DataBox-Comments">';
-    var _splitend = '<div class="P PagerWrap">';
-    var _pagetitle = 'h2.CommentHeading';
+    var _insertPoint = "div.P.PagerWrap:has(div#PagerAfter)";  
+    var _titleElement = 'h2.CommentHeading';
+    var _testElement = 'li[id^="Comment_"]';    
+    var _fromElement = "ul.MessageList.DataList.Comments";
   } 
   if ( $( "ol.DataList.DataList-Search" ).length ) {
     // search lists
     var _type = 3;
-    var _insertbefore = "div.PageControls.Bottom";
-    var _dataload = ".html .DataList";
-    var _splitstart = '<ol id=';
-    var _splitend = '<div class="PageControls Bottom">';
-    var _pagetitle = '';
+    var _insertPoint = "div.PageControls.Bottom";
+    var _titleElement = 'h2.CommentHeading';
+    var _testElement = 'li[class^="Item"]';
+    var _fromElement = "ol.DataList.DataList-Search";
   }
 
   // only continue if value page type
   if (_type > 0) {
-
     var _oldurl = _url; // store old url
     // if not first page inserted
-    if ( $('div[id^="pageadd_"]').length > 0 ) {
+    if ( $('div[id^="pageadd_"]').length ) {
       var regex = new RegExp( "pageadd_", 'g');
       _page = parseInt($('div[id^="pageadd_"]').last().attr('id').replace(/\D/g,''));
-
       _newpage = _page + 1; //increment page   
 
       if (_type == 3){
@@ -472,58 +459,49 @@ var getnextpage = function(){
         var regex = new RegExp( "/p"+_page, 'g');
         _url = _oldurl.replace(regex, "/p" + _newpage); //replace the old page number in the url with the new page number 
       } 
-
     } else { 
       // if first page inserted     
       _url = $("#PagerBefore a.Next").attr("href"); //get page details from pager element next button
-
+      _page = parseInt($("#PagerBefore a.Highlight").text(),10);
       if (_type == 3) { 
         _newpage = parseInt(_url.substring( _url.indexOf('?Page=') + 6, _url.indexOf('&')).split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
       } else {   
         _newpage = parseInt(_url.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
       }
     }
-    // console.log(_url);
-    // check not past last page
+
     if (_newpage <= _lastpage ) {
+           
       _id = "pageadd_" + _newpage;
+      var _toElement = "#" + _id;
+      var _titleString = "Page " + _newpage + " ([resultcount] Results)"
 
-      $('#'+ _id).remove(); //ensure no duplicates for each page 
-      $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertbefore); //insert before bottom pager controls
+      $(_toElement).remove(); //ensure no duplicates for each page 
+      $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertPoint); //insert before bottom pager controls
+      if (_type != 1) { $(_toElement).prepend('<h2 class="CommentHeading"></h2>'); }  //prepend page title for search results (not on original page)
+      $(_toElement).prepend('<div id="loading" style="text-align:center;"><h1 class="CommentHeading">Loading Next Page</h2></div>'); //let user know what is happening
+      
+      loadpage(_url,_toElement, _fromElement, _testElement, _titleElement, _titleString); //execute ajax load
+      if  ( _type == 1 )  { applyFilter();  }              //reapply current filter for discussion lists
+      $(document).trigger('PageLoaded', [$(_toElement)]);       //trigger enhancements from other scripts
 
-      var $content = $("#" + _id); //store container as variable to reduce calls
-      $content.hide(); // hide container while work going on
-
-      console.log ("Loading:" + _url); //troubleshooting
-
-      // load next page into hidden container while processing it
-      $content.load( _url + _dataload , function (response, status, xhr) {
-        console.log("Load Status: " + status); //troubleshooting
-
-        var _fullPage = response; //store response in variable
-        //console.log(_fullPage);
-        // extract required elements using defined start and end strings
-        var _newcontent =  _fullPage.substring( _fullPage.indexOf(_splitstart), _fullPage.indexOf(_splitend)) ; 
-        //console.log(_newcontent);
-        $content.html(_newcontent); //update container to new page extract
-        // calculate thread count for discussions pages
-        if ($content.find('tr.ItemDiscussion').length > 0 ) { 
-          var _pageposts =  " (" + $content.find('tr.ItemDiscussion').length + " Threads)";
-        } else {
-          var _pageposts = ""; 
-        }
-        // change title at top of section from Discussions to Page # ( # Threads) format
-        $content.find( _pagetitle ).first().text("Page " + parseInt(_id.split(/[_ ]+/).pop().replace(/\D/g,'')) + _pageposts );
-
-        if (_type == 3) { $content.prepend('<h2 class="CommentHeading">Page ' + _newpage + '</h2>'); }   
-
-        if  ( _type == 1 )  { applyFilter();  } //reapply current filter
-        $content.show(); //unhide container
-        $(document).trigger('PageLoaded', [$content]);
-      }); 
     }
   }
 }
+
+//function to load next results page - if required elements not found will try again
+var loadpage = function(_url, _toElement, _fromElement, _testElement,  _titleElement, _titleString ){
+        $.ajax({ url: _url, dataType: 'html', async:false, success: function(response) { 
+        if (jQuery(response).find(_testElement).length) {
+        jQuery(response).find(_fromElement).clone().appendTo( $(_toElement));  
+        $(_toElement).find( _titleElement ).first().text(_titleString.replace("[resultcount]", $(_toElement).find(_testElement).length)); // change title at top of to Page # ( # Threads) format
+        $(_toElement).find('#loading').remove();
+        }  else {
+          loadpage(_url, _toElement, _fromElement, _testElement,  _titleElement, _titleString );
+        }      
+      } });
+}
+
 
 
 // function to reset user experience to default plug in values - also useful when major update to filter definitions in code
@@ -573,15 +551,6 @@ var getSettings = function() {
 /* end of section cloned from asterelle  */
 
 $( document ).ready(function() {
-  //amend title on first page header of discussions page
-  var $content = $("div.DataTableWrap");
-  if ($content.find('tr.ItemDiscussion').length > 0 ) { 
-    var _pageposts =  " (" + $content.find('tr.ItemDiscussion').length + " Threads)"; 
-  } else {
-    var _pageposts = ""; 
-  }
-  $content.find('td.DiscussionName').first().text("Page " + $('#PagerBefore > a.Highlight').first().text() + _pageposts );
-
   //initialise plug in
   addCSS();
   getSettings();
