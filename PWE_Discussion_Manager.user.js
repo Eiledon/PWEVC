@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.4
+// @version     0.4.5
 // @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -36,8 +36,11 @@ _css += ".enhance-discussion .SpOptions:before { content: \"\\f146\" !important;
 _css += ".discussionManager { width: 925px; } ";
 _css += "#totopbutton { display:inline-block; position: fixed; bottom: 2px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#toendbutton { display:inline-block; position: fixed; top: 10px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
-_css += "#totopbutton:hover, #toendbutton:hover { opacity: 1; filter:alpha(opacity=100); } ";
-_css += "#totopbutton .navbutton, #toendbutton .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:default;} ";
+_css += "#toPage { display:inline-block; float:right; } ";
+_css += "#ScrollToPrev, #ScrollToNext { display:inline-block; margin-right:5px; opacity: 0.75;  filter:alpha(opacity=75);} ";
+_css += "#totopbutton:hover, #toendbutton:hover, #ScrollToPrev:hover, #ScrollToNext:hover { opacity: 1; filter:alpha(opacity=100); } ";
+_css += "#totopbutton .navbutton, #toendbutton .navbutton, #toPage .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:pointer;} ";
+_css += "#toPage .navbutton  {font-size:24px; vertical-align:middle;} ";
 
 //default values
 var pweDiscussionManager = { 
@@ -384,16 +387,69 @@ var triggernextpage = function() {
         var _containerclass = 'div.Column.ContentColumn'; 
 
         //insert initial header for search page parsing
-        if ( $('div[id^="pageadd_"]').length == 0 && $('h2.CommentHeading').length == 0 ) {
+        if ( $('div[id^="pageadd_"]').length == 0 && $(_element).length == 0 ) {
           //insert page 1 header for tracking
           $( "ol.DataList.DataList-Search").first().before('<h2 class="CommentHeading">Page ' + parseInt($("#PagerBefore a.Highlight").text(),10) + '</h2>');
+        }
+      }
+      if ( $( "ul.DataList.Activities" ).length ) {
+        var _type = 4;
+        var _element = 'h2.CommentHeading';
+        var _containerclass = 'div.Column.ContentColumn, div.DataListWrap'; 
+
+        //insert initial header for search page parsing
+        if ( $('div[id^="pageadd_"]').length == 0 && $(_element).length == 0 ) {
+          var _nexturl = $("#PagerBefore a.Next").attr("href");
+          var _thispage = parseInt(_nexturl.substring( _nexturl.indexOf('?Page=') + 6, _nexturl.indexOf('&')).split(/[\/ ]+/).pop().replace(/\D/g,'')) - 1;
+          
+          //insert page 1 header for tracking
+          $( "ul.DataList.Activities").first().before('<h2 class="CommentHeading">Page ' + _thispage + '</h2>');
+        }
+      }
+      if ( $( "ul.DataList.Discussions" ).length ) {
+        var _type = 5;
+        var _element = 'h2.CommentHeading';
+        var _containerclass = 'div.DataListWrap'; 
+
+        //insert initial header for search page parsing
+        if ( $('div[id^="pageadd_"]').length == 0 && $(_element).length == 0 ) {
+          var _nexturl = $("#PagerMore a").attr("href");
+          var _thispage = parseInt(_nexturl.split(/[\/ ]+/).pop().replace(/\D/g,'')) - 1;
+          
+          //insert page 1 header for tracking
+          $( "ul.DataList.Discussions").first().before('<h2 class="CommentHeading">Page ' + _thispage + '</h2>');
+        }
+      }
+      if ( $( "ul.DataList.SearchResults" ).length ) {
+        var _type = 6;
+        var _element = 'h2.CommentHeading';
+        var _containerclass = 'div.DataListWrap'; 
+
+        //insert initial header for search page parsing
+        if ( $('div[id^="pageadd_"]').length == 0 && $(_element).length == 0 ) {
+          var _nexturl = $("#PagerMore a").attr("href");
+          var _thispage = parseInt(_nexturl.split(/[\/ ]+/).pop().replace(/\D/g,'')) - 1;
+
+          //insert page 1 header for tracking
+          $( "ul.DataList.SearchResults").first().before('<h2 class="CommentHeading">Page ' + _thispage + '</h2>');
         }
       }
 
       // only continue if value page type
       if (_type > 0) {
+        
+        var $post = $( _containerclass + ',div[id^="pageadd_"]').last().find( _element ).first(); // find header in last 'page' loaded    
+        
+        if ( $('div[id^="pageadd_"]').length == 0 && $('#toPage').length == 0 ) {
 
-        var $post = $( _containerclass + ',div[id^="pageadd_"]').last().find( _element ); // find header in last 'page' loaded
+          // add To Next and To Prev Page Buttons
+          $post.prepend("<div id='toPage'><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span></div>"); //bottom button
+          //define functions
+          $post.find('#ScrollToNext').first().click(function(){ if($('div[id^="pageadd_"]').length) { var _toPos = $('div[id^="pageadd_"]:first').offset().top + 2; }else{ var _toPos = $(document).height();} $("html, body").animate({ scrollTop:_toPos }, "fast"); });   
+
+        }
+        
+
         if ($post.is(":visible")) {      
           var position = parseInt( $post.position().top - $(window).scrollTop(),10); // determine relation to top of window for trigger
           // only load next page if selected element has just scrolled off top of page OR scrolled near to bottom
@@ -442,6 +498,36 @@ var getnextpage = function(){
     var _testElement = 'li[class^="Item"]';
     var _fromElement = "ol.DataList.DataList-Search";
   }
+  if ( $( "ul.DataList.Activities" ).length ) {
+    // activities
+    var _type = 4;
+    var _insertPoint = "div.PagerWrap:has(div#PagerBefore)";
+    var _titleElement = 'h2.CommentHeading';
+    var _testElement = 'li[id^="Activity_"]';
+    var _fromElement = "ul.DataList.Activities";
+    // no true last page  
+    _lastpage = 100;
+  }
+  if ( $( "ul.DataList.Discussions" ).length ) {
+    // profile discussions
+    var _type = 5;
+    var _insertPoint = "div.DataListWrap";
+    var _titleElement = 'h2.CommentHeading';
+    var _testElement = 'li[id^="Discussion_"]';
+    var _fromElement = "ul.DataList.Discussions";
+    // no true last page  
+    _lastpage = 100;
+  }
+  if ( $( "ul.DataList.SearchResults" ).length ) {
+    // profile comments
+    var _type = 6;
+    var _insertPoint = "div.DataListWrap";
+    var _titleElement = 'h2.CommentHeading';
+    var _testElement = 'li[id^="Comment_"]';
+    var _fromElement = "ul.DataList.SearchResults";
+    // no true last page  
+    _lastpage = 100;
+  }
 
   // only continue if value page type
   if (_type > 0) {
@@ -452,7 +538,7 @@ var getnextpage = function(){
       _page = parseInt($('div[id^="pageadd_"]').last().attr('id').replace(/\D/g,''));
       _newpage = _page + 1; //increment page   
 
-      if (_type == 3){
+      if (_type == 3||_type == 4){
         var regex = new RegExp( "Page=p"+_page, 'g');
         _url = _oldurl.replace(regex, "Page=p" + _newpage); //replace the old page number in the url with the new page number 
       } else {
@@ -461,9 +547,9 @@ var getnextpage = function(){
       } 
     } else { 
       // if first page inserted     
-      _url = $("#PagerBefore a.Next").attr("href"); //get page details from pager element next button
+      _url = $("#PagerBefore a.Next, #PagerMore a").first().attr("href"); //get page details from pager element next button
       _page = parseInt($("#PagerBefore a.Highlight").text(),10);
-      if (_type == 3) { 
+      if (_type == 3||_type == 4) { 
         _newpage = parseInt(_url.substring( _url.indexOf('?Page=') + 6, _url.indexOf('&')).split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
       } else {   
         _newpage = parseInt(_url.split(/[\/ ]+/).pop().replace(/\D/g,'')); //extract page number from url as integer     
@@ -477,8 +563,15 @@ var getnextpage = function(){
       var _titleString = "Page " + _newpage + " ([resultcount] Results)"
 
       $(_toElement).remove(); //ensure no duplicates for each page 
-      $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertPoint); //insert before bottom pager controls
-      if (_type != 1) { $(_toElement).prepend('<h2 class="CommentHeading"></h2>'); }  //prepend page title for search results (not on original page)
+      
+      if (_type == 5||_type == 6){
+       $(_insertPoint + ',div[id^="pageadd_"]' ).last().after("<div id='" + _id + "' class='pagehidden'></div>"); //insert after more controls 
+      }else{
+       $("<div id='" + _id + "' class='pagehidden'></div>").insertBefore(_insertPoint); //insert before bottom pager controls        
+      }
+
+      if (_type != 1) { $(_toElement).prepend('<h2 class="CommentHeading"></h2>'); }  //prepend page title for search results (not on original page) 
+      
       $(_toElement).prepend('<div id="loading" style="text-align:center;"><h1 class="CommentHeading">Loading Next Page</h2></div>'); //let user know what is happening
       
       loadpage(_url,_toElement, _fromElement, _testElement, _titleElement, _titleString); //execute ajax load
@@ -491,18 +584,21 @@ var getnextpage = function(){
 
 //function to load next results page - if required elements not found will try again
 var loadpage = function(_url, _toElement, _fromElement, _testElement,  _titleElement, _titleString ){
-        $.ajax({ url: _url, dataType: 'html', async:false, success: function(response) { 
-        if (jQuery(response).find(_testElement).length) {
-        jQuery(response).find(_fromElement).clone().appendTo( $(_toElement));  
-        $(_toElement).find( _titleElement ).first().text(_titleString.replace("[resultcount]", $(_toElement).find(_testElement).length)); // change title at top of to Page # ( # Threads) format
-        $(_toElement).find('#loading').remove();
-        }  else {
-          loadpage(_url, _toElement, _fromElement, _testElement,  _titleElement, _titleString );
-        }      
-      } });
+  $.ajax({ url: _url, dataType: 'html', async:false, success: function(response) { 
+    if (jQuery(response).find(_testElement).length) {
+      jQuery(response).find(_fromElement).clone().appendTo( $(_toElement));  
+      $(_toElement).find( _titleElement ).first().text(_titleString.replace("[resultcount]", $(_toElement).find(_testElement).length)); // change title at top of to Page # ( # Threads) format
+      // add To Next and To Prev Page Buttons
+      $(_toElement).find(_titleElement).first().prepend("<div id='toPage'><span id='ScrollToPrev' class='navbutton' title='Scroll To Previous Page' alt='Scroll To Previous Page'></span><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span></div>"); //bottom button
+      //define functions
+      $(_toElement).find('#ScrollToPrev').first().click(function(){ $("html, body").animate({ scrollTop: $(_toElement).prev().offset().top }, "fast"); });
+      $(_toElement).find('#ScrollToNext').first().click(function(){ if($(_toElement).next().length) { var _toPos = $(_toElement).next().offset().top + 2; }else{ var _toPos = $(document).height();} $("html, body").animate({ scrollTop:_toPos }, "fast"); });   
+      $(_toElement).find('#loading').remove();
+    }  else {
+      loadpage(_url, _toElement, _fromElement, _testElement,  _titleElement, _titleString );
+    }      
+  } });
 }
-
-
 
 // function to reset user experience to default plug in values - also useful when major update to filter definitions in code
 var resetDMOptions = function () {
