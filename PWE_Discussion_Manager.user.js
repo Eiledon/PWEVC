@@ -4,8 +4,8 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.4.5
-// @description  Adds Autopage (Discussions/Comments/Search Results), Filtering (Discussions) and buttons for Scroll to Top and Bottom
+// @version     0.4.6
+// @description  Adds Autopage (Discussions/Comments/Search Results/Activity, Profiles - Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
 // ==/UserScript==
@@ -14,6 +14,7 @@ var _sep = "_" ;
 var _url = "";
 var lastScrollTop = 0, delta = 5;
 var triggerdelay = 500;
+var _autopagepaused = false;
 
 //temporary CSS - will be moved to external CSS file after some testing
 var _css = "";
@@ -37,8 +38,8 @@ _css += ".discussionManager { width: 925px; } ";
 _css += "#totopbutton { display:inline-block; position: fixed; bottom: 2px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#toendbutton { display:inline-block; position: fixed; top: 10px;   right: 7px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#toPage { display:inline-block; float:right; } ";
-_css += "#ScrollToPrev, #ScrollToNext { display:inline-block; margin-right:5px; opacity: 0.75;  filter:alpha(opacity=75);} ";
-_css += "#totopbutton:hover, #toendbutton:hover, #ScrollToPrev:hover, #ScrollToNext:hover { opacity: 1; filter:alpha(opacity=100); } ";
+_css += "#ScrollToPrev, #ScrollToNext, #autopageToggle { display:inline-block; margin-right:5px; opacity: 0.75;  filter:alpha(opacity=75);} ";
+_css += "#totopbutton:hover, #toendbutton:hover, #ScrollToPrev:hover, #ScrollToNext:hover, #autopageToggle:hover { opacity: 1; filter:alpha(opacity=100); } ";
 _css += "#totopbutton .navbutton, #toendbutton .navbutton, #toPage .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:pointer;} ";
 _css += "#toPage .navbutton  {font-size:24px; vertical-align:middle;} ";
 
@@ -122,6 +123,7 @@ var pweDiscussionManager = {
 
 // insert code generates css style to head
 var addCSS = function(){ $("<style type='text/css'>" + _css + " </style>").appendTo("head"); };
+
 // add filter and settings dialog
 var addFilterForm = function(){
   // form opening html
@@ -242,14 +244,14 @@ var applyOptions = function(){
     if ( $this.attr("id") ==  "opt_fAutoPage")  {
       if ($this.is(":not(:checked)")){
         //if not selected unbind scroll event and remove any added pages
-        $(window).unbind('scroll');
+        toggleAutopage(false);
         $("div[id^='pageadd_']").remove();
         console.log ('Autopage Disabled');
       } else {
         //if selected unbind and reapply autopage on scroll event
         _url = ""; //reset page position
-        $(window).unbind('scroll');
-        $(window).data('loading',false).scroll( debounce(triggernextpage, triggerdelay) );
+        toggleAutopage(true);
+		_autopagepaused = false;
         console.log ('Autopage Enabled');
       }    
     }
@@ -349,6 +351,39 @@ function debounce(func, wait, immediate) {
 	};
 };
 
+// function to toggle state of autopage and associated pause button(s)
+var toggleAutopageButton = function (_state) {
+  if (typeof _state === 'undefined') { _state = true; }
+  if (_state)  {
+    //if autopaging paused, unpause and change icon, text to 'pause' button
+    $('span[id="autopageToggle"]').each(function() {
+      $(this).text ('') ;
+      $(this).attr('title','Pause Autopaging');
+      $(this).attr('alt','Pause Autopaging');
+    });
+  } else {
+    // if autopaging running, pause and change icon, text to 'unpause' button
+    $('span[id="autopageToggle"]').each(function() {
+      $(this).text('') ;
+      $(this).attr('title','Restart Autopaging');
+      $(this).attr('alt','Restart Autopaging');
+    });
+  }  
+  toggleAutopage(_state);
+  _autopagepaused = !_autopagepaused;
+}                 
+
+// function to disable/enable scroll event checking
+var toggleAutopage = function(_state) {
+  if (typeof _state === 'undefined') { _state = true; }
+  if (_state) {
+       $(window).unbind('scroll');
+       $(window).data('loading',false).scroll( debounce(triggernextpage, triggerdelay) );
+  } else {
+       $(window).unbind('scroll');
+  }
+}
+
 
 // wrapper to manage excessive on scroll triggering
 var triggernextpage = function() {
@@ -443,10 +478,10 @@ var triggernextpage = function() {
         if ( $('div[id^="pageadd_"]').length == 0 && $('#toPage').length == 0 ) {
 
           // add To Next and To Prev Page Buttons
-          $post.prepend("<div id='toPage'><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span></div>"); //bottom button
+          $post.prepend("<div id='toPage'><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span><span id='autopageToggle' class='navbutton' title='Pause Autopaging' alt='Pause Autopaging'></span></div>"); //bottom button
           //define functions
           $post.find('#ScrollToNext').first().click(function(){ if($('div[id^="pageadd_"]').length) { var _toPos = $('div[id^="pageadd_"]:first').offset().top + 2; }else{ var _toPos = $(document).height();} $("html, body").animate({ scrollTop:_toPos }, "fast"); });   
-
+          $post.find('#autopageToggle').first().click(function(){ toggleAutopageButton(_autopagepaused); });
         }
         
 
@@ -466,6 +501,9 @@ var triggernextpage = function() {
   }
   lastScrollTop = st;
 }
+
+
+
 
 
 // autopager function main code
@@ -589,10 +627,11 @@ var loadpage = function(_url, _toElement, _fromElement, _testElement,  _titleEle
       jQuery(response).find(_fromElement).clone().appendTo( $(_toElement));  
       $(_toElement).find( _titleElement ).first().text(_titleString.replace("[resultcount]", $(_toElement).find(_testElement).length)); // change title at top of to Page # ( # Threads) format
       // add To Next and To Prev Page Buttons
-      $(_toElement).find(_titleElement).first().prepend("<div id='toPage'><span id='ScrollToPrev' class='navbutton' title='Scroll To Previous Page' alt='Scroll To Previous Page'></span><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span></div>"); //bottom button
+      $(_toElement).find(_titleElement).first().prepend("<div id='toPage'><span id='ScrollToPrev' class='navbutton' title='Scroll To Previous Page' alt='Scroll To Previous Page'></span><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span><span id='autopageToggle' class='navbutton' title='Pause Autopaging' alt='Pause Autopaging'></span></div>"); //bottom button
       //define functions
       $(_toElement).find('#ScrollToPrev').first().click(function(){ $("html, body").animate({ scrollTop: $(_toElement).prev().offset().top }, "fast"); });
       $(_toElement).find('#ScrollToNext').first().click(function(){ if($(_toElement).next().length) { var _toPos = $(_toElement).next().offset().top + 2; }else{ var _toPos = $(document).height();} $("html, body").animate({ scrollTop:_toPos }, "fast"); });   
+      $(_toElement).find('#autopageToggle').first().click(function(){ toggleAutopageButton(_autopagepaused); });
       $(_toElement).find('#loading').remove();
     }  else {
       loadpage(_url, _toElement, _fromElement, _testElement,  _titleElement, _titleString );
