@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.4.7
+// @version     0.4.8
 // @description  Adds Autopage (Discussions/Comments/Search Results/Activity, Profiles - Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -42,6 +42,8 @@ _css += "#ScrollToPrev, #ScrollToNext, #autopageToggle { display:inline-block; m
 _css += "#totopbutton:hover, #toendbutton:hover, #ScrollToPrev:hover, #ScrollToNext:hover, #autopageToggle:hover { opacity: 1; filter:alpha(opacity=100); } ";
 _css += "#totopbutton .navbutton, #toendbutton .navbutton, #toPage .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:pointer;} ";
 _css += "#toPage .navbutton  {font-size:24px; vertical-align:middle; height: 22px; width: 22px;} ";
+_css += "h2 #toPage .navbutton { height: 28px; width: 30px; line-height: 28px; margin-top: -3px; background: transparent linear-gradient(#373A43, #272731) repeat scroll 0% 0%; border-top: 1px solid #44444E; text-align: center; border-radius: 5px; } "; 
+_css += "h2.CommentHeading[id=firstheader] #toPage .navbutton { margin-top: -14px; }"; //to align with pager
 
 //default values
 var pweDiscussionManager = { 
@@ -415,6 +417,12 @@ var triggernextpage = function() {
         _type = 2;
         var _element = 'h2.CommentHeading';
         var _containerclass = 'div.CommentsWrap';
+		
+		//mark initial header to ease styling
+        if ( $('div[id^="pageadd_"]').length == 0 ) {
+          //insert page 1 header for tracking
+          $( _element).first().attr("id","firstheader");
+        }
       } 
       if ( $( "ol.DataList.DataList-Search" ).length ) {
         var _type = 3;
