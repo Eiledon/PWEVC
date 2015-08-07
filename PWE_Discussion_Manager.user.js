@@ -41,7 +41,7 @@ _css += "#toPage { display:inline-block; float:right; } ";
 _css += "#ScrollToPrev, #ScrollToNext, #autopageToggle { display:inline-block; margin-right:5px; opacity: 0.75;  filter:alpha(opacity=75);} ";
 _css += "#totopbutton:hover, #toendbutton:hover, #ScrollToPrev:hover, #ScrollToNext:hover, #autopageToggle:hover { opacity: 1; filter:alpha(opacity=100); } ";
 _css += "#totopbutton .navbutton, #toendbutton .navbutton, #toPage .navbutton  {text-align:left; font-family:vanillicon; font-size:32px; font-weight: normal; color:#A7A7A9; text-shadow: 0px 2px 4px black; cursor:pointer;} ";
-_css += "#toPage .navbutton  {font-size:24px; vertical-align:middle;} ";
+_css += "#toPage .navbutton  {font-size:24px; vertical-align:middle; height: 22px; width: 22px;} ";
 
 //default values
 var pweDiscussionManager = { 
@@ -357,14 +357,14 @@ var toggleAutopageButton = function (_state) {
   if (_state)  {
     //if autopaging paused, unpause and change icon, text to 'pause' button
     $('span[id="autopageToggle"]').each(function() {
-      $(this).text ('') ;
+      $(this).text ('❚❚') ;
       $(this).attr('title','Pause Autopaging');
       $(this).attr('alt','Pause Autopaging');
     });
   } else {
     // if autopaging running, pause and change icon, text to 'unpause' button
     $('span[id="autopageToggle"]').each(function() {
-      $(this).text('') ;
+      $(this).text('►') ;
       $(this).attr('title','Restart Autopaging');
       $(this).attr('alt','Restart Autopaging');
     });
@@ -478,7 +478,7 @@ var triggernextpage = function() {
         if ( $('div[id^="pageadd_"]').length == 0 && $('#toPage').length == 0 ) {
 
           // add To Next and To Prev Page Buttons
-          $post.prepend("<div id='toPage'><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span><span id='autopageToggle' class='navbutton' title='Pause Autopaging' alt='Pause Autopaging'></span></div>"); //bottom button
+          $post.prepend("<div id='toPage'><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span><span id='autopageToggle' class='navbutton' title='Pause Autopaging' alt='Pause Autopaging'>❚❚</span></div>"); //bottom button
           //define functions
           $post.find('#ScrollToNext').first().click(function(){ if($('div[id^="pageadd_"]').length) { var _toPos = $('div[id^="pageadd_"]:first').offset().top + 2; }else{ var _toPos = $(document).height();} $("html, body").animate({ scrollTop:_toPos }, "fast"); });   
           $post.find('#autopageToggle').first().click(function(){ toggleAutopageButton(_autopagepaused); });
@@ -627,7 +627,7 @@ var loadpage = function(_url, _toElement, _fromElement, _testElement,  _titleEle
       jQuery(response).find(_fromElement).clone().appendTo( $(_toElement));  
       $(_toElement).find( _titleElement ).first().text(_titleString.replace("[resultcount]", $(_toElement).find(_testElement).length)); // change title at top of to Page # ( # Threads) format
       // add To Next and To Prev Page Buttons
-      $(_toElement).find(_titleElement).first().prepend("<div id='toPage'><span id='ScrollToPrev' class='navbutton' title='Scroll To Previous Page' alt='Scroll To Previous Page'></span><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span><span id='autopageToggle' class='navbutton' title='Pause Autopaging' alt='Pause Autopaging'></span></div>"); //bottom button
+      $(_toElement).find(_titleElement).first().prepend("<div id='toPage'><span id='ScrollToPrev' class='navbutton' title='Scroll To Previous Page' alt='Scroll To Previous Page'></span><span id='ScrollToNext' class='navbutton' title='Scroll To Next Page' alt='Scroll To Next Page'></span><span id='autopageToggle' class='navbutton' title='Pause Autopaging' alt='Pause Autopaging'>❚❚</span></div>"); //bottom button
       //define functions
       $(_toElement).find('#ScrollToPrev').first().click(function(){ $("html, body").animate({ scrollTop: $(_toElement).prev().offset().top }, "fast"); });
       $(_toElement).find('#ScrollToNext').first().click(function(){ if($(_toElement).next().length) { var _toPos = $(_toElement).next().offset().top + 2; }else{ var _toPos = $(document).height();} $("html, body").animate({ scrollTop:_toPos }, "fast"); });   
