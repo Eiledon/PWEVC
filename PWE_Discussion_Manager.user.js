@@ -4,7 +4,7 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.4.8
+// @version     0.4.9
 // @description  Adds Autopage (Discussions/Comments/Search Results/Activity, Profiles - Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -15,6 +15,7 @@ var _url = "";
 var lastScrollTop = 0, delta = 5;
 var triggerdelay = 500;
 var _autopagepaused = false;
+var _workingimage = "https://cd8ba0b44a15c10065fd-24461f391e20b7336331d5789078af53.ssl.cf1.rackcdn.com/images/progress.gif"; //progress image
 
 //temporary CSS - will be moved to external CSS file after some testing
 var _css = "";
@@ -201,15 +202,36 @@ var addFilterForm = function(){
 // add scroll to top/bottom of document buttons
 var addScrollButtons = function(){
   //remove any previous instance of buttons
-  $("div[id^='to']:has(span[id^='ScrollTo'])").remove();
+  $("div[id='totopbutton'],div[id='toendbutton']").remove();
   // add To Top and To Bottom Buttons
   $('#Frame').append("<div id='totopbutton'><span id='ScrollToTop' class='navbutton' title='Scroll To Top of Page' alt='Scroll To Top of Page'></span></div>"); //top button
   $('#Frame').append("<div id='toendbutton'><span id='ScrollToBottom' class='navbutton' title='Scroll To End of Page' alt='Scroll To End of Page'></span></div>"); //bottom button
   //define functions
   $('#ScrollToTop').click(function(){ $("html, body").animate({ scrollTop: 0 }, "fast"); });
   $('#ScrollToBottom').click(function(){ $("html, body").animate({ scrollTop: $(document).height() }, "fast"); });
+  $('#ScrollToTop').hide();
 };
 
+// show hide scroll to top/bottom based on page position
+var toggleScrollButtons = function(){
+  // if scroll to buttons enabled, use page position to hide/show when relevant
+  if ($('#ScrollToBottom,#ScrollToTop').length) {
+    // near top
+    var _scroller = "#ScrollToTop";
+    if ($(window).scrollTop() <= 100) {
+      if ($(_scroller).is(":visible")) {$(_scroller).fadeToggle('fast');}
+    }  else {
+      if ($(_scroller).is(":visible") == false) {$(_scroller).fadeToggle('fast');}
+    }
+    // near bottom
+    var _scroller = "#ScrollToBottom";
+    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+      if ($(_scroller).is(":visible")) {$(_scroller).fadeToggle('fast');}
+    }  else {
+      if ($(_scroller).is(":visible") == false) {$(_scroller).fadeToggle('fast');}
+    }   
+  } 
+}
 
 // update and apply options as determined by form check boxes
 var applyOptions = function(){
@@ -233,11 +255,14 @@ var applyOptions = function(){
     if ( $this.attr("id") ==  "opt_fScrollButtons")  {
       if ($this.is(":not(:checked)")){  
         // if not selected remove scroll to buttons
-        $("div[id^='to']:has(span[id^='ScrollTo'])").remove();
+        $("div[id='totopbutton'],div[id='toendbutton']").remove();
+        $(window).off('scroll.myScrollButtons');
         console.log ('Scroll Buttons Disabled');
       } else {
         // if selected add scroll to buttons
         addScrollButtons();
+        $(window).off('scroll.myScrollButtons');
+        $(window).on( 'scroll.myScrollButtons', debounce(toggleScrollButtons, triggerdelay) );
         console.log ('Scroll Buttons Enabled');
       }    
     }
@@ -253,7 +278,7 @@ var applyOptions = function(){
         //if selected unbind and reapply autopage on scroll event
         _url = ""; //reset page position
         toggleAutopage(true);
-		_autopagepaused = false;
+		    _autopagepaused = false;
         console.log ('Autopage Enabled');
       }    
     }
@@ -379,13 +404,12 @@ var toggleAutopageButton = function (_state) {
 var toggleAutopage = function(_state) {
   if (typeof _state === 'undefined') { _state = true; }
   if (_state) {
-       $(window).unbind('scroll');
-       $(window).data('loading',false).scroll( debounce(triggernextpage, triggerdelay) );
+       $(window).off('scroll.myAutoPage');
+       $(window).data('loading',false).on( 'scroll.myAutoPage', debounce(triggernextpage, triggerdelay) );
   } else {
-       $(window).unbind('scroll');
+       $(window).off('scroll.myAutoPage');
   }
 }
-
 
 // wrapper to manage excessive on scroll triggering
 var triggernextpage = function() {
@@ -394,7 +418,6 @@ var triggernextpage = function() {
   if ($(window).data('loading')) return;
 
   var nearToBottom = 50; // how far from the bottom before event is actioned
-  //if ($(window).scrollTop() + $(window).height() > $(document).height() - nearToBottom) { 
   var st = $(document).scrollTop();
 
   if(Math.abs(lastScrollTop - st) <= delta)
@@ -618,7 +641,7 @@ var getnextpage = function(){
 
       if (_type != 1) { $(_toElement).prepend('<h2 class="CommentHeading"></h2>'); }  //prepend page title for search results (not on original page) 
       
-      $(_toElement).prepend('<div id="loading" style="text-align:center;"><h1 class="CommentHeading">Loading Next Page</h2></div>'); //let user know what is happening
+      $(_toElement).prepend('<div id="loading" style="text-align:center;"><img src="' + _workingimage + '"></div>'); //let user know what is happening
       
       loadpage(_url,_toElement, _fromElement, _testElement, _titleElement, _titleString); //execute ajax load
       if  ( _type == 1 )  { applyFilter();  }              //reapply current filter for discussion lists
