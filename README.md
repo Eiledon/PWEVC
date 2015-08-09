@@ -2,6 +2,7 @@
 <h1>Game Server Status Add-In</h1>
 
 Installation Link: https://github.com/Eiledon/PWEVC/raw/master/PWE_Game_Server_Status.user.js
+(<a href='#installation'>Installation Help</a>)
 
 The Game Server Status Add-In was constructed to provide an at a glance status of several of PWE's game servers on the new vanillaforums. Once installed a traffic light panel will be added to the top of the page near the forum search box. Each Game's Initials are displayed together with a status light. A Green light means the game server(s) are online. A Red light means the game server(s) are offline. An Amber light on the main panel indicates that some of the game server(s) are offline. Hovering over each game's initials will display further information on the state of individual server(s) where application, split into east coast, west coast and europe.
 
@@ -11,6 +12,7 @@ The Game Server Status Add-In was constructed to provide an at a glance status o
 <h1>Game Sidebar Panel</h1>
 
 Installation Link: https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
+(<a href='#installation'>Installation Help</a>)
 
 The Game Sidebar adds an easily accessed panel to PWE Vanilla Forums with links to each game's home page and specific game forum. See below for installation instructions. Once installed, simply hover mouse over the ARC logo in the top left corner of your browser window to access the hidden panel.
 
