@@ -4,25 +4,15 @@
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Game_Server_Status.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Game_Server_Status.user.js
 // @include     *perfectworld.vanillaforums.com/*
-// @version     0.4
+// @version     0.6
 // @description  Adds server status display panel to the top of the forums, refreshes status every 5 minutes
 // @grant       none
 // @copyright  2015, Eiledon.
 // ==/UserScript==
 
-var _css = ".Game_Status_Block {	float:right; margin-top: 8px;	margin-right:15px; padding:0px; border:1px solid #444; }"; 
-_css += ".Game_Block {	padding:2px; float: left; overflow:visible;}";           
-_css += ".Game_Status, .Server_Status {	padding: 0; display: none;	height: 12px;	width: 9px;	background: url('http://launcher.champions-online.com/static/all/img/server_status.png') no-repeat;	white-space: nowrap;}";
-_css += ".Game_Status[data-status=up], .Server_Status[data-status=up] { display: inline-block; background-position:  -0px 3px; }";
-_css += ".Game_Status[data-status=down], .Server_Status[data-status=down] { display: inline-block; background-position: -18px 3px; }";
-_css += ".Game_Status[data-status=mix] { display: inline-block; background-position: -9px 3px; }";
-_css += ".Game_Pop { position: absolute; z-index: 10; margin:-2px 0 0 0; padding:3px; background:rgba(0,0,0,0.75); border:1px solid #444; min-width:100px; }";
-_css += "div.Game_Block .Game_Pop {display:none; }";
-_css += "div.Game_Block:hover .Game_Pop {display:block;}";
-_css += ".Game_Pop span { opacity:0.5;}";
-_css += ".Game_Pop ul {margin-top:-10px; }";
-_css += ".Game_Pop li {margin-top:-5px; margin-left:10px; margin-right:3px;}";
-
+var unhide_games;
+var update_server_interval;
+var _statuslogging = "";
 var _refresh = 5; //no of minutes between checking server status
 
 var _Game_Status_Block = '<div class="Game_Status_Block"></div>';
@@ -35,6 +25,8 @@ var _games = {
   "games": [
     {
       "name":"CO",
+      "scrape":"cryptic",
+      "state":"initial",
       "url":"http://launcher.champions-online.com/launcher_server_status",
       "xpath":"'",
       "exclude":"",
@@ -42,6 +34,8 @@ var _games = {
     },
     {
       "name":"STO",
+      "scrape":"cryptic",
+      "state":"initial",
       "url":"http://launcher.startrekonline.com/launcher_server_status",
       "xpath":"'",
       "exclude":"",
@@ -49,6 +43,8 @@ var _games = {
     },
     {
       "name":"NW",
+      "scrape":"cryptic",
+      "state":"initial",
       "url":"http://launcher.playneverwinter.com/launcher_server_status",
       "xpath":"'",
       "exclude":"",
@@ -56,6 +52,8 @@ var _games = {
     },
     {
       "name":"PW",
+      "scrape":"zone",
+      "state":"initial",
       "url":"http://pwi.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"zone\")]'",
       "exclude":"Heavens Tear|Lost City|Harshlands|Raging Tide",
@@ -63,6 +61,8 @@ var _games = {
     },
     {
       "name":"JD",
+      "scrape":"zone",
+      "state":"initial",
       "url":"http://jd.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"zone\")]'",
       "exclude":"",
@@ -70,6 +70,8 @@ var _games = {
     },
     {
       "name":"FW",
+      "scrape":"server-times",
+      "state":"initial",
       "url":"http://fw.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"server-times\")]'",
       "exclude":"",
@@ -77,6 +79,8 @@ var _games = {
     },
     {
       "name":"BOI",
+      "scrape":"zone",
+      "state":"initial",
       "url":"http://boi.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"zone\")]'",
       "exclude":"",
@@ -84,6 +88,8 @@ var _games = {
     },
     {
       "name":"WOI",
+      "scrape":"zone",
+      "state":"initial",
       "url":"http://woi.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"zone\")]'",
       "exclude":"",
@@ -92,8 +98,16 @@ var _games = {
   ]
 };
 
-// insert code generates css style to head
-var addCSS = function(){ $("<style type='text/css'>" + _css + " </style>").appendTo("head"); };
+//get external css
+getCSS = function(url) {
+	var _head  = document.getElementsByTagName('head')[0];
+	var _link  = document.createElement('link');
+	_link.setAttribute('rel',"stylesheet");
+	_link.setAttribute('type',"text/css");
+	_link.setAttribute('media',"all");
+	_link.setAttribute('href',url);
+	_head.appendChild(_link);
+};
 
 // update physical page values
 function set_server_status(_game,_status, _logo, _servers)
@@ -119,27 +133,31 @@ function set_server_status(_game,_status, _logo, _servers)
   $('#' + _game + '_pop').html('');
   $('<img src="' + _logo + '" width="100px" >').appendTo('#' + _game + '_pop');
   $server_status_block.appendTo('#' + _game + '_pop');
-  console.log(_game + ': ' + _status);
+  _statuslogging += _game + ' - ' + _status + '; '; 
 }
 
 function update_server_status()
 {
-
+  _statuslogging ="Game Status: ";
   $.each(_games.games,function(index, _item){
+    var _status = "";
+    var _gameindex = index;
     var _game = _item.name;
+    var _scrape = _item.scrape;
+    var _state = _item.state;
     var _url = _item.url;
     var _xpath = _item.xpath;
     var _exclude = _item.exclude;
     var _logo = _item.logo;
     var _qry = "SELECT * FROM html WHERE url='" + _url +  _xpath;
     var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(_qry)  + "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
-    $.getJSON(yql, function(data){
-      if (_game == "STO"||_game =="CO"||_game == "NW") { 
-        var _status = data.query.results.body;
+    var yqlload = $.getJSON(yql, function(data){
+      if (_scrape == "cryptic") { 
+         _status = data.query.results.body;
         var _addit = '{"zones":[{"zone":"' + _game + '","servers":[{"server":"Live","status":"' + _status + '"}]}]}';
         set_server_status(_game, _status, _logo, _addit); 
       }
-      if (_game == "PW"||_game == "JD"||_game == "BOI"||_game == "WOI") {
+      if (_scrape == "zone") {
         var _addit = "", _status = "", _upcnt = 0, _dncnt = 0;
         _addit += '{"zones":[';
         var g = 0, h = data.query.results.div.length;
@@ -183,7 +201,7 @@ function update_server_status()
 
       }    
 
-      if (_game == "FW") {
+      if (_scrape == "server-times") {
         var _addit = "", _status = "", _upcnt = 0, _dncnt = 0;
         _addit += '{"zones":[';
         var g = 0, h = data.query.results.div.length;
@@ -221,17 +239,27 @@ function update_server_status()
         if (_upcnt > 0){ _status = "up"; }
         if (_dncnt > 0){ _status = "down"; }
         if (_upcnt > 0 && _dncnt > 0 ){ _status = "mix"; }
+
         set_server_status(_game, _status, _logo, _addit);
       }
+    })
+    .fail(function(){
+      _games.games[_gameindex].state="failed";
+    }) 
+    .complete(function(){
+      _games.games[_gameindex].state="checked";
+      if (_gameindex == _games.games.length - 1) {
+        setTimeout(function(){ console.log(_statuslogging); }, 10 * 1000); 
+      }
     }); 
-  });               
+  }); 
 }
 
 function add_game_block(){
   if ($(".SiteSearch").length){
     $('.Game_Status_Block').remove();
     var $gameblock = $(_Game_Status_Block);
-
+    $gameblock.hide();
     $.each( _games.games, function( index, item ){
       var regex = new RegExp( "{game}", 'g');
       $gameblock.append(_Game_Block.replace(regex, item.name));
@@ -240,11 +268,24 @@ function add_game_block(){
   }
 }
 
+function unhide_game_block(){
+  var _readystate = true
+  $.each(_games.games,function(index, _item){
+    if(_item.state == "initial"){_readystate = false;}    
+  });
+  if(_readystate){
+    $('.Game_Status_Block').fadeToggle( "fast");
+    window.clearInterval(unhide_games);  
+  } 
+}
+
 $( document ).ready(function() {
   //initialise plug in
-  addCSS();
+  getCSS("https://rawgit.com/Eiledon/PWEVC/master/PWE_Game_Server_Status.css");
   add_game_block();
   update_server_status();
-  var server_interval = window.setInterval(update_server_status, 60 * 1000 * _refresh);
-  $(window).unload(function() { window.clearInterval(server_interval); });
+  unhide_games = window.setInterval(unhide_game_block,500);
+  update_server_interval = window.setInterval(update_server_status, 60 * 1000 * _refresh);
+  $(window).unload(function() { window.clearInterval(update_server_interval); });
+  $(window).unload(function() { window.clearInterval(unhide_games); });
 });
