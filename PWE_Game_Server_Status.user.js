@@ -284,7 +284,7 @@ $( document ).ready(function() {
   getCSS("https://rawgit.com/Eiledon/PWEVC/master/PWE_Game_Server_Status.css");
   add_game_block();
   update_server_status();
-  unhide_games = window.setInterval(unhide_game_block,500);
+  unhide_games = window.setInterval(unhide_game_block,100);
   update_server_interval = window.setInterval(update_server_status, 60 * 1000 * _refresh);
   $(window).unload(function() { window.clearInterval(update_server_interval); });
   $(window).unload(function() { window.clearInterval(unhide_games); });
