@@ -1,20 +1,28 @@
 # PWEVC
+<h1>Game Server Status Add-In</h1>
+
+Installation Link: https://github.com/Eiledon/PWEVC/raw/master/PWE_Game_Server_Status.user.js
+
+The Game Server Status Add-In was constructed to provide an at a glance status of several of PWE's game servers on the new vanillaforums. Once installed a traffic light panel will be added to the top of the page near the forum search box. Each Game's Initials are displayed together with a status light. A Green light means the game server(s) are online. A Red light means the game server(s) are offline. An Amber light on the main panel indicates that some of the game server(s) are offline. Hovering over each game's initials will display further information on the state of individual server(s) where application, split into east coast, west coast and europe.
+
+<img src="https://rawgit.com/Eiledon/PWEVC/master/pwe_game_server_status.jpg">
+
+<hr>
 <h1>Game Sidebar Panel</h1>
+
+Installation Link: https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
 
 The Game Sidebar adds an easily accessed panel to PWE Vanilla Forums with links to each game's home page and specific game forum. See below for installation instructions. Once installed, simply hover mouse over the ARC logo in the top left corner of your browser window to access the hidden panel.
 
 <img src="https://rawgit.com/Eiledon/PWEVC/master/pwevc_gamepanel.jpg">
 
 
-
+<hr>
 <h1>Installation</h1>
 
 How you install user scripts depends on which browser you use. Typically, you will need to install a browser extension. The list below is not an exhaustive list.
 
-Once you have the extension installed you can activate the user script by clicking the following link:
-
-https://rawgit.com/Eiledon/PWEVC/master/Eile_PWEVC_addon_sidebar.user.js
-
+Once you have the extension installed you can activate the user script by clicking the on of the Installation Links above.
 
 <h2><a id="user-content-google-chrome-chromium-and-related" class="anchor" href="#google-chrome-chromium-and-related" aria-hidden="true"><span class="octicon octicon-link"></span></a>Google Chrome, Chromium, and related</h2>
 <ul>
