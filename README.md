@@ -14,10 +14,18 @@ The Game Server Status Add-In was constructed to provide an at a glance status o
 Installation Link: https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
 (<a href='#installation'>Installation Help</a>)
 
-The Game Sidebar adds an easily accessed panel to PWE Vanilla Forums with links to each game's home page and specific game forum. See below for installation instructions. Once installed, simply hover mouse over the ARC logo in the top left corner of your browser window to access the hidden panel.
+The Game Sidebar adds an easily accessed panel to PWE Vanilla Forums with links to each game's home page, news page and specific game forum. The panel also has permanent links to the ARC Home Page, Charge Page and ARC User Profile. 
 
+Once installed, simply hover mouse over the ARC logo in the top left corner of your browser window to access the hidden panel. To access the links for a particular game simply hover over that game's logo.
+
+Users can customise which games the panel will show by clicking on the Select "Games button" in the bottom right corner. Then simply untick the games you do not wish to see and click "Select Games" button once more to apply the choices and save the settings. These settings will be remembered between browsing sessions.
+
+<h2>Panel - Standard View</h2>
 <img src="https://rawgit.com/Eiledon/PWEVC/master/pwevc_gamepanel.jpg">
-
+<h2>Panel - Game Links Visible</h2>
+<img src="https://rawgit.com/Eiledon/PWEVC/master/pwevc_gamepanel_hover.jpg">
+<h2>Panel - Game Selection Menu</h2>
+<img src="https://rawgit.com/Eiledon/PWEVC/master/pwevc_gamepanel_menu.jpg">
 
 <hr>
 <h1>Installation</h1>
