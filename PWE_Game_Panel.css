@@ -1,0 +1,162 @@
+#gpouter {
+   position: fixed;
+   top: 0;
+   left: 0; 
+}
+
+#gpbutton { 
+   padding: 5px;
+   min-height: 35px;    
+   min-width: 35px; 
+}
+
+#gppop { 
+   position: absolute;
+	 z-index: 1;
+   margin: 10px 0px 0px -18px;
+   padding: 10px;
+   z-index:1;
+   width: 640px; 
+   background:rgba(0,0,0,0.85);
+   border-radius:15px;
+}
+
+#gpgamelist {
+   vertical-align: top;
+   margin:0px;
+   padding:0px;
+}
+
+.gpgameitem {
+   float:left;
+   /*margin:5px;*/
+   padding: 5px;
+   width: 150px;
+   height: 60px;   
+   background-size: 110px;
+   background-repeat: no-repeat;
+   background-position: left center;
+   background-origin: padding-box;
+   overflow: hidden;
+   vertical-align: top;
+   border-radius:10px;
+}
+
+.gpgameitem:hover {
+   background-color:rgba(0,0,0,0.85);
+   box-shadow: 0 0 3px rgba(255,255,255,0.5);
+}
+
+.gplinklist {
+   display:none;
+   float:right;
+}
+
+.gpgameitem:hover .gplinklist{
+   display:block;
+}
+
+.gplinkitem {
+  display : block;
+  padding-left:2px;
+  padding-right:2px;
+  font-weight : bold;
+  font-size:10px;
+  text-decoration : none;
+	text-align:right;
+  margin-bottom:-2px;
+}
+
+#gpoptbutton {
+   display:inline-block;
+   clear:left;
+   float:right;
+   cursor: pointer;
+   border-radius:10px;
+   padding-left:5px;
+   padding-right:5px;
+   background-color:rgba(0,0,0,0.5);
+   color:#444;
+}
+
+#gpoptbutton:hover {
+   background-color:rgba(0,0,0,0.85);
+   box-shadow: 0 0 3px rgba(255,255,255,0.5);
+   color:#888;
+}
+
+#gpopt:checked ~ #gpselect {
+	display:inline-block;
+}
+
+#gpselect {
+   clear:left;
+   display:none;
+   padding:5px;
+   background-color:rgba(0,0,0,0.85);
+   color:#444;
+   border:1px solid #444;
+   border-radius:10px;
+   margin-bottom:-5px;
+   margin-top:10px;
+}
+
+#gpselect:before { float:left; width:618px; content:'Tick/Untick to Show/Hide and click Select Games button to apply';}
+
+#gpselect li {
+   float:left;
+   display:inline-block;
+   width:206px;
+}
+
+#gpselect input[type=checkbox], #gpopt {
+	display: none;
+}
+
+#gpselect label {
+   display: inline-block;
+   cursor: pointer;
+   position: relative;
+   padding-left: 20px;
+   margin-right: 15px;
+   white-space:nowrap;
+}
+
+#gpselect label:hover {
+   color:#888;
+}
+
+#gpselect label:before {border-radius: 3px;}
+
+#gpselect label:before {
+	  content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 5px;
+    position: absolute;
+    left: 0px;
+    bottom: 5px;
+    background-color: #444;
+   border-radius: 3px;
+    box-shadow: 0px 2px 3px 0px rgba(0,0,0, 0.5) inset, 0px 1px 0px 0px rgba(64, 64, 64, 0.8);
+}
+  
+#gpselect input[type=checkbox]:checked + label:before {
+	content: "\2713";
+	text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+	font-size: 13px;
+	color: #f3f3f3;
+	text-align: center;
+  line-height: 15px;
+}
+
+#gpselect input[type=checkbox]:checked + label {
+	color: #fff;
+}
+
+#gpbutton { opacity: 0.75; filter:alpha(opacity=75); }
+#gpbutton:hover { opacity: 1; filter:alpha(opacity=100); }
+#gpbutton #gppop { display: none; }
+#gpbutton:hover #gppop { display: inline-block; }
+   
