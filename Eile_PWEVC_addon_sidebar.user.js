@@ -3,7 +3,7 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
-// @version    1
+// @version    1.0
 // @description  Adds popup window for each game on with links to game home page, news page and game forum. Users can now select which games to show and these settings are stored locally. 
 // @match      http://perfectworld.vanillaforums.com/*
 // @grant       none
