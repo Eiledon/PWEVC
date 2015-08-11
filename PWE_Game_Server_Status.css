@@ -67,3 +67,8 @@ div.Game_Block:hover .Game_Pop {
 	margin-left:10px;
 	margin-right:3px;
 }
+
+.Game_Pop img {
+	width:110px;
+}
+
