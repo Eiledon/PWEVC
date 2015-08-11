@@ -3,6 +3,8 @@
 	margin-top: 8px;
 	margin-right:15px;
 	padding:0px;
+	padding-left:5px;
+	padding-right:5px;
 	border:1px solid #444;
  }
 
@@ -73,28 +75,57 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
 }
 
 #Game_Select_Button {
-   /*display:block;*/
-   cursor: pointer;
-   border-radius:10px;
-   padding-left:5px;
-   padding-right:5px;
-   background-color:rgba(0,0,0,0.5);
-   color:#444;
+	display:inline-block;
+	font-family: "vanillicon";
+	font-size:15px;
+  font-variant: normal;
+  font-weight: normal;
+  font-style: normal;
+  color: #888;
+  width:15px;
+	height: 15px;
+  text-align: center;
+	vertical-align:middle;
+  text-decoration: inherit;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
 }
 
-#Game_Select_Button:hover {
-   background-color:rgba(0,0,0,0.85);
-   box-shadow: 0 0 3px rgba(255,255,255,0.5);
-   color:#888;
+#Opt_block:hover #Game_Select_Button {
+	color:#900;
 }
 
 #Game_Select_Opt:checked ~ #Opt_pop {
 	display:block;
 }
 
+#Game_Select_Opt:checked ~ #Game_Select_Button {
+	color:#900;
+	-webkit-animation: heartbeat 0.5s infinite alternate;
+  -moz-animation: heartbeat 0.5s infinite alternate;
+}
+
+@-webkit-keyframes heartbeat {
+  0% {
+    font-size:15px;
+  }
+  100% {
+    font-size:14px;
+  }
+}
+@-moz-keyframes heartbeat {
+  0% {
+    font-size:15px;
+  }
+  100% {
+    font-size:14px;
+  }
+}
+
 #Opt_pop {
 	width: 400px;
-  margin:-2px 0 0 -315px;
+  margin:-2px 0 0 -385px;
 }
 
 #Game_Select {
@@ -104,7 +135,7 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
    color:#444;
 }
 
-#Game_Select:before { float:left; width:300px; content:'Tick to include. Click Select Games to apply.';}
+#Game_Select:before { float:left; width:300px; content:'Tick to include. Click "Select Games" icon above to apply.';}
 
 #Game_Select li {
    float:left;
