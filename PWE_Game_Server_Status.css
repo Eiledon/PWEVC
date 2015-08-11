@@ -135,7 +135,7 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
    color:#444;
 }
 
-#Game_Select:before { float:left; width:300px; content:'Tick to include. Click "Select Games" icon above to apply.';}
+#Game_Select:before { color:#888; float:left; width:380px; white-space:nowrap; content:'Tick to include. Click "Select Games" icon above to apply.';}
 
 #Game_Select li {
    float:left;
