@@ -42,10 +42,10 @@
 	position: absolute;
 	z-index: 10;
 	margin:-2px 0 0 0;
-	padding:3px;
+	padding:4px;
 	background:rgba(0,0,0,0.75);
 	border:1px solid #444;
-	width:110px;
+	width:125px;
  }
 
 div.Game_Block .Game_Pop {
@@ -57,7 +57,7 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
 }
 
 .Game_Pop span {
-	opacity:0.5;
+	opacity:0.6;
 }
 
 .Game_Pop:not(#Opt_pop) ul {
@@ -65,9 +65,9 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
  }
 
 .Game_Pop:not(#Opt_pop) li {
+	white-space:nowrap;
+	text-align:right;
 	margin-top:-5px;
-	margin-left:10px;
-	margin-right:3px;
 }
 
 .Game_Pop img {
@@ -125,7 +125,7 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
 
 #Opt_pop {
 	width: 400px;
-  margin:-2px 0 0 -385px;
+  margin:-2px 0 0 -390px;
 }
 
 #Game_Select {
