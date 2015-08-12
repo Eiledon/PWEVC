@@ -3,7 +3,7 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/Eile_PWEVC_addon_sidebar.user.js
-// @version    1.0
+// @version    1.0.1
 // @description  Adds popup window for each game on with links to game home page, news page and game forum. Users can now select which games to show and these settings are stored locally. 
 // @match      http://perfectworld.vanillaforums.com/*
 // @grant       none
@@ -65,13 +65,13 @@ function makePanel() {
     $gpgamelist.append($gpgameitem.append($gplinklist))
 
     // open and loop through games array
-    $.getJSON('https://rawgit.com/Eiledon/PWEVC/master/games.json', function(json) {
+    $.getJSON('https://rawgit.com/Eiledon/PWEVC/master/PWE_games.json', function(json) {
         $.each(json.games, function(_index, _element) {
             //should entry be visible?
             if (gameselection.indexOf(_element.catname) >= 0) { var _visible = true;} else { var _visible = false;}
 
             //collect/define game specific variables
-            var _propername = toTitleCase(_element.arcname.replace(/(-|_)/g," ")); 
+            var _propername = _element.propername; 
             var _arcurl = 'http://www.arcgames.com/en/games/'+ _element.arcname; 
             var _caturl = 'http://perfectworld.vanillaforums.com/categories/'+_element.catname; 
             var _imgurl = _element.logo; 
