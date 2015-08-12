@@ -274,7 +274,6 @@ $( document ).ready(function() {
     //on completion of json load append all generated content into page
 
     getSettings();
-    console.log('passed')
     makeGameStatusBlock();
     update_server_status();
     unhide_games = window.setInterval(unhide_game_block,100);
