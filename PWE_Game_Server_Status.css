@@ -8,10 +8,27 @@
 	border:1px solid #444;
  }
 
+.Game_Status_Block > :not(:first-child) {
+	margin-left:2px;
+}
+
 .Game_Block {
 	padding:2px;
 	float: left;
 	overflow:visible;
+	cursor:default;
+}
+
+.Game_Block:not(#Opt_block) {
+	text-align:center;
+	border-left:1px solid transparent;
+	border-right:1px solid transparent;
+}
+
+div.Game_Block:not(#Opt_block):hover {
+	background:rgba(0,0,0,0.75);
+	border-left:1px solid #444;
+	border-right:1px solid #444;
 }
 
 .Game_Status, .Server_Status {
@@ -41,7 +58,7 @@
 .Game_Pop {
 	position: absolute;
 	z-index: 10;
-	margin:-2px 0 0 0;
+	margin: 2px 0px 0px -3px;
 	padding:4px;
 	background:rgba(0,0,0,0.75);
 	border:1px solid #444;
@@ -56,15 +73,12 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
 	display:block;
 }
 
-.Game_Pop span {
-	opacity:0.6;
-}
-
 .Game_Pop:not(#Opt_pop) ul {
 	margin-top:-10px;
  }
 
 .Game_Pop:not(#Opt_pop) li {
+	clear:left;
 	white-space:nowrap;
 	text-align:right;
 	margin-top:-5px;
@@ -72,6 +86,11 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
 
 .Game_Pop img {
 	width:110px;
+}
+
+.Game_Pop span {
+	opacity:0.6;
+	float:left;
 }
 
 #Game_Select_Button {
@@ -89,6 +108,7 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
   text-decoration: inherit;
   text-transform: none;
   line-height: 1;
+	cursor:pointer;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -107,25 +127,17 @@ div.Game_Block:not(#Opt_block):hover .Game_Pop {
 }
 
 @-webkit-keyframes heartbeat {
-  0% {
-    font-size:15px;
-  }
-  100% {
-    font-size:14px;
-  }
+  0% { font-size:15px; }
+  100% { font-size:14px; }
 }
 @-moz-keyframes heartbeat {
-  0% {
-    font-size:15px;
-  }
-  100% {
-    font-size:14px;
-  }
+  0% { font-size:15px; }
+  100% { font-size:14px; }
 }
 
 #Opt_pop {
 	width: 400px;
-  margin:-2px 0 0 -390px;
+  margin: 2px 0 0 -387px;
 }
 
 #Game_Select {
