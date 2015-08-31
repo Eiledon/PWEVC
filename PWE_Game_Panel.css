@@ -67,6 +67,8 @@
   margin-bottom:-2px;
 }
 
+#gp_arc .gplinkitem { margin-bottom: -8px; }
+
 #gpoptbutton {
    display:inline-block;
    clear:left;
