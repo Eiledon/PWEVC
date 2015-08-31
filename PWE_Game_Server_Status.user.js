@@ -3,8 +3,8 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Game_Server_Status.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Game_Server_Status.user.js
-// @include     *perfectworld.vanillaforums.com/*
-// @version     0.7
+// @include     http://forum.arcgames.com/*
+// @version     0.7.1
 // @description  Adds server status display panel to the top of the forums, refreshes status every 5 minutes
 // @grant       none
 // @copyright  2015, Eiledon.
@@ -55,6 +55,7 @@ function update_server_status()
       var _xpath = item.xpath;
       var _exclude = item.exclude;
       var _qry = "SELECT * FROM html WHERE url='" + _url +  _xpath;
+      console.log(_qry);
       var yql = 'http://query.yahooapis.com/v1/public/yql?q=' + encodeURIComponent(_qry)  + "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
       var yqlload = $.getJSON(yql, function(data){
 
@@ -115,7 +116,7 @@ function update_server_status()
           if (_upcnt > 0){ _status = "up"; }
           if (_dncnt > 0){ _status = "down"; }
           if (_upcnt > 0 && _dncnt > 0 ){ _status = "mix"; }
-
+          console.log(_serverdetails);
           set_server_status(_game, _status, _serverdetails, _state);
         }    
       })
