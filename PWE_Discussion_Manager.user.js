@@ -3,8 +3,8 @@
 // @namespace   https://github.com/Eiledon/PWEVC/
 // @downloadURL https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
 // @updateURL  https://github.com/Eiledon/PWEVC/raw/master/PWE_Discussion_Manager.user.js
-// @include     *perfectworld.vanillaforums.com/*
-// @version     0.4.9
+// @include     http://forum.arcgames.com/*
+// @version     0.4.9.1
 // @description  Adds Autopage (Discussions/Comments/Search Results/Activity, Profiles - Discussions/Comments), Filtering (Discussions) and buttons for Scroll to Top and Bottom
 // @grant       none
 // @copyright  2015, Eiledon. portions of code from Asterelle
@@ -431,22 +431,26 @@ var triggernextpage = function() {
       var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments, 3 = Search Results
 
       //determine page type and define variables 
+      //
+      //-- /Discussions, /Category/Discussions
       if ( $( "table.DataTable.DiscussionsTable" ).length ) { 
         _type = 1;
         var _element = 'td.DiscussionName';
         var _containerclass = 'div.DataTableWrap';
-      }
+      }      
+      //-- /Discussion/Comment
       if ( $( "ul.MessageList.DataList.Comments" ).length ) {
         _type = 2;
         var _element = 'h2.CommentHeading';
         var _containerclass = 'div.CommentsWrap';
 		
-		//mark initial header to ease styling
+		    //mark initial header to ease styling
         if ( $('div[id^="pageadd_"]').length == 0 ) {
           //insert page 1 header for tracking
           $( _element).first().attr("id","firstheader");
         }
-      } 
+      }       
+      //-- /Search
       if ( $( "ol.DataList.DataList-Search" ).length ) {
         var _type = 3;
         var _element = 'h2.CommentHeading';
@@ -458,6 +462,7 @@ var triggernextpage = function() {
           $( "ol.DataList.DataList-Search").first().before('<h2 class="CommentHeading">Page ' + parseInt($("#PagerBefore a.Highlight").text(),10) + '</h2>');
         }
       }
+      //-- /Activity
       if ( $( "ul.DataList.Activities" ).length ) {
         var _type = 4;
         var _element = 'h2.CommentHeading';
@@ -471,7 +476,8 @@ var triggernextpage = function() {
           //insert page 1 header for tracking
           $( "ul.DataList.Activities").first().before('<h2 class="CommentHeading">Page ' + _thispage + '</h2>');
         }
-      }
+      }      
+      //-- /Profile/Discussions
       if ( $( "ul.DataList.Discussions" ).length ) {
         var _type = 5;
         var _element = 'h2.CommentHeading';
@@ -486,6 +492,7 @@ var triggernextpage = function() {
           $( "ul.DataList.Discussions").first().before('<h2 class="CommentHeading">Page ' + _thispage + '</h2>');
         }
       }
+      //-- /Profile/Comments
       if ( $( "ul.DataList.SearchResults" ).length ) {
         var _type = 6;
         var _element = 'h2.CommentHeading';
@@ -542,33 +549,36 @@ var getnextpage = function(){
   var _id = ""; //reset id
   var _type = 0; // reset page type 0 = null, 1 = discussion lists e.g discussions or categories, 2 = discussion pages i.e comments
   var _lastpage = parseInt($("#PagerBefore a.LastPage").text(),10);
+  var _entries = 999999999;
+  var _maxentries = 999999999;
   //determine page type and define variables
+  //
+  //-- /Discussions, /Category/Discussions
   if ( $( "table.DataTable.DiscussionsTable" ).length ) {
-    //categories & discussions pages discussion lists
     var _type = 1;
     var _insertPoint = ".PageControls.Bottom";
     var _titleElement = 'td.DiscussionName';
     var _testElement = 'tr[id^="Discussion_"]';
     var _fromElement = "table.DataTable.DiscussionsTable";
-  } 
+  }
+  //-- /Discussion/Comment
   if ( $( "ul.MessageList.DataList.Comments" ).length ) {
-    // discussion comments lists
     var _type = 2;
     var _insertPoint = "div.P.PagerWrap:has(div#PagerAfter)";  
     var _titleElement = 'h2.CommentHeading';
     var _testElement = 'li[id^="Comment_"]';    
     var _fromElement = "ul.MessageList.DataList.Comments";
   } 
+  //-- /Search
   if ( $( "ol.DataList.DataList-Search" ).length ) {
-    // search lists
     var _type = 3;
     var _insertPoint = "div.PageControls.Bottom";
     var _titleElement = 'h2.CommentHeading';
     var _testElement = 'li[class^="Item"]';
     var _fromElement = "ol.DataList.DataList-Search";
   }
+  //-- /Activity
   if ( $( "ul.DataList.Activities" ).length ) {
-    // activities
     var _type = 4;
     var _insertPoint = "div.PagerWrap:has(div#PagerBefore)";
     var _titleElement = 'h2.CommentHeading';
@@ -577,8 +587,8 @@ var getnextpage = function(){
     // no true last page  
     _lastpage = 100;
   }
+  //-- /Profile/Discussions
   if ( $( "ul.DataList.Discussions" ).length ) {
-    // profile discussions
     var _type = 5;
     var _insertPoint = "div.DataListWrap";
     var _titleElement = 'h2.CommentHeading';
@@ -586,9 +596,10 @@ var getnextpage = function(){
     var _fromElement = "ul.DataList.Discussions";
     // no true last page  
     _lastpage = 100;
+    _maxentries = $('li.Discussions span.Count').first().text();
   }
+  //-- /Profile/Comments
   if ( $( "ul.DataList.SearchResults" ).length ) {
-    // profile comments
     var _type = 6;
     var _insertPoint = "div.DataListWrap";
     var _titleElement = 'h2.CommentHeading';
@@ -596,6 +607,7 @@ var getnextpage = function(){
     var _fromElement = "ul.DataList.SearchResults";
     // no true last page  
     _lastpage = 100;
+    _maxentries = $('li.Comments span.Count').first().text();
   }
 
   // only continue if value page type
@@ -625,7 +637,9 @@ var getnextpage = function(){
       }
     }
 
-    if (_newpage <= _lastpage ) {
+    _entries = $(_testElement).length; // count results
+    
+    if (_newpage <= _lastpage && _entries < _maxentries ) {
            
       _id = "pageadd_" + _newpage;
       var _toElement = "#" + _id;
@@ -646,7 +660,9 @@ var getnextpage = function(){
       loadpage(_url,_toElement, _fromElement, _testElement, _titleElement, _titleString); //execute ajax load
       if  ( _type == 1 )  { applyFilter();  }              //reapply current filter for discussion lists
       $(document).trigger('PageLoaded', [$(_toElement)]);       //trigger enhancements from other scripts
-
+      
+    } else {
+      $(_toElement).prepend('<div id="loading" style="text-align:center;">END OF RESULTS</div>'); //let user know what is happening
     }
   }
 }
