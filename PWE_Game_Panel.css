@@ -162,4 +162,14 @@
 #gpbutton:hover { opacity: 1; filter:alpha(opacity=100); }
 #gpbutton #gppop { display: none; }
 #gpbutton:hover #gppop { display: inline-block; }
+
+#gpreminder {
+	width: 100%;
+	text-align: center;
+	background-color: rgba(255, 0, 0, 0.2);
+	line-height: 1.7em;
+	height: 20px;
+	padding: 1px;
+	border-bottom: 1px solid #808080;
+}
    
