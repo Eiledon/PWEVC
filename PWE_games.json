@@ -1,32 +1,76 @@
 {
   "games":[
-    {      
+    {
       "name":"STO",
       "propername":"Star Trek Online",
       "catname":"startrekonline",
       "arcname":"star-trek-online",
       "logo":"http://images-cdn.perfectworld.com/arc/b0/f8/b0f828fe91b8db7e4a8bc149fbb61c051429636566.png",
-	  "forumself":"http://forum.arcgames.com/startrekonline",
-	  "forumembed":"http://www.arcgames.com/en/forums/startrekonline/",
+      "forumself":"http://forum.arcgames.com/startrekonline",
+      "forumembed":"http://www.arcgames.com/en/forums/startrekonline/",
       "scrape":"cryptic",
       "state":"initial",
       "url":"http://launcher.startrekonline.com/launcher_server_status",
       "xpath":"'",
-      "exclude":""
+      "exclude":"",
+      "usefullinks":[
+        {
+          "linktext":"Admin Posts",
+          "link":"http://forum.arcgames.com/startrekonline/search?adv=1&search=&title=&author=tacofangs%2Cborticuscryptic%2Cpwlaughingtrendy%2Ccoldsnapped%2Cflyingtarg%2Ccrypticfrost%2Ccrypticjoejing%2Ccallevista&cat=all&tags=&discussion_d=1&discussion_question=1&discussion_poll=1&comment_c=1&comment_answer=1&within=1+year&date="
+        },
+        {
+          "linktext":"Wiki",
+          "link":"http://sto.gamepedia.com/"
+        },
+        {
+          "linktext":"Lore",
+          "link":"http://sto.gamepedia.com/Lore"
+        },
+        {
+          "linktext":"Commodities",
+          "link":"http://sto.gamepedia.com/Commodities"
+        },
+        {
+          "linktext":"Reddit",
+          "link":"http://www.reddit.com/r/sto/"
+        }
+      ]
     },
     {
       "name":"CO",
-      "propername":"Champions Online",      
+      "propername":"Champions Online",
       "catname":"championsonline",
       "arcname":"champions-online",
       "logo":"http://images-cdn.perfectworld.com/arc/a6/33/a633c3671491651ea7b42d6d95815edb1385152436.png",
-	  "forumself":"http://forum.arcgames.com/championsonline",
-	  "forumembed":"http://www.arcgames.com/en/forums/championsonline/",
+      "forumself":"http://forum.arcgames.com/championsonline",
+      "forumembed":"http://www.arcgames.com/en/forums/championsonline/",
       "scrape":"cryptic",
       "state":"initial",
       "url":"http://launcher.champions-online.com/launcher_server_status",
       "xpath":"'",
-      "exclude":""
+      "exclude":"",
+      "usefullinks":[
+        {
+          "linktext":"Admin Posts",
+          "link":"http://forum.arcgames.com/championsonline/search?adv=1&search=&title=&author=jheinig%2Ccrypticarkayne%2Cladygadfly%2Ctrailturtle%2Csplosions&cat=all&tags=&discussion_d=1&discussion_question=1&discussion_poll=1&comment_c=1&comment_answer=1&within=1+year&date="
+        },
+        {
+          "linktext":"PDB",
+          "link":"http://primusdatabase.com"
+        },
+        {
+          "linktext":"Reddit",
+          "link":"http://www.reddit.com/r/ChampionsOnlineFFA/"
+        },
+        {
+          "linktext":"Wiki",
+          "link":"http://www.championswiki.com/index.php?title=Main_Page"
+        },
+        {
+          "linktext":"PowerHouse",
+          "link":"http://powerhouse.nullware.com/powerhouse.html"
+        }
+      ]
     },
     {
       "name":"NW",
@@ -34,13 +78,19 @@
       "catname":"neverwinter",
       "arcname":"neverwinter",
       "logo":"http://images-cdn.perfectworld.com/arc/3a/81/3a81ab0f31f45e9932b42a9acb6901251428424134.png",
-	  "forumself":"http://forum.arcgames.com/neverwinter/categories/neverwinter",
-	  "forumembed":"http://www.arcgames.com/en/forums/neverwinter/#/categories/neverwinter",
+      "forumself":"http://forum.arcgames.com/neverwinter/categories/neverwinter",
+      "forumembed":"http://www.arcgames.com/en/forums/neverwinter/#/categories/neverwinter",
       "scrape":"cryptic",
       "state":"initial",
       "url":"http://launcher.playneverwinter.com/launcher_server_status",
       "xpath":"'",
-      "exclude":""
+      "exclude":"",
+      "usefullinks":[
+        {
+          "linktext":"NWcalc",
+          "link":"http://nwcalc.com"
+        }
+      ]
     },
     {
       "name":"PWI",
@@ -48,13 +98,27 @@
       "catname":"pwi",
       "arcname":"pwi",
       "logo":"http://images-cdn.perfectworld.com/arc/92/47/9247267bdf832fd41d502991fe80fbbd1419024145.png",
-	  "forumself":"http://forum.arcgames.com/pwi",
-	  "forumembed":"http://www.arcgames.com/en/forums/pwi/#/categories/pwi",
+      "forumself":"http://forum.arcgames.com/pwi",
+      "forumembed":"http://www.arcgames.com/en/forums/pwi/#/categories/pwi",
       "scrape":"zone",
       "state":"initial",
       "url":"http://pwi.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"zone\")]'",
-      "exclude":"Heavens Tear|Lost City|Harshlands|Raging Tide"
+      "exclude":"Heavens Tear|Lost City|Harshlands|Raging Tide",
+      "usefullinks":[
+        {
+          "linktext":"Calc",
+          "link":"http://mypers.pw/1.9/"
+        },
+        {
+          "linktext":"PWDB",
+          "link":"http://pwdatabase.com"
+        },
+        {
+          "linktext":"Aster Tools",
+          "link":"http://aster.ohmydays.net/pw"
+        }
+      ]
     },
     {
       "name":"FW",
@@ -62,8 +126,8 @@
       "catname":"forsakenworld",
       "arcname":"forsaken-world",
       "logo":"http://images-cdn.perfectworld.com/arc/c0/75/c0755520a43e6b6a9b551be9948f83d51425683020.png",
-	  "forumself":"http://forum.arcgames.com/forsakenworld/categories/forsakenworld",
-	  "forumembed":"http://www.arcgames.com/en/forums/forsakenworld/#/categories/forsakenworld",
+      "forumself":"http://forum.arcgames.com/forsakenworld/categories/forsakenworld",
+      "forumembed":"http://www.arcgames.com/en/forums/forsakenworld/#/categories/forsakenworld",
       "scrape":"server-times",
       "state":"initial",
       "url":"http://fw.perfectworld.com/status",
@@ -76,8 +140,8 @@
       "catname":"jadedynasty",
       "arcname":"jade-dynasty",
       "logo":"http://images-cdn.perfectworld.com/arc/55/ba/55ba6657e975b3d45abdf2cb45ad4b7b1387241344.png",
-	  "forumself":"http://forum.arcgames.com/jadedynasty/categories/jadedynasty",
-	  "forumembed":"http://www.arcgames.com/en/forums/jadedynasty/#/categories/jadedynasty",
+      "forumself":"http://forum.arcgames.com/jadedynasty/categories/jadedynasty",
+      "forumembed":"http://www.arcgames.com/en/forums/jadedynasty/#/categories/jadedynasty",
       "scrape":"zone",
       "state":"initial",
       "url":"http://jd.perfectworld.com/status",
@@ -90,8 +154,8 @@
       "catname":"apbreloaded",
       "arcname":"APB_Reloaded",
       "logo":"http://images-cdn.perfectworld.com/arc/04/25/04251ebaafb985484e54dd859c152de31403296162.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/apbreloaded",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/apbreloaded"
+      "forumself":"http://forum.arcgames.com/arc/categories/apbreloaded",
+      "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/apbreloaded"
     },
     {
       "name":"BOI",
@@ -99,8 +163,8 @@
       "catname":"battleoftheimmortals",
       "arcname":"battle-of-the-immortals",
       "logo":"http://images-cdn.perfectworld.com/arc/fc/1b/fc1b836d8d7ddc102d664bbd448cb9441412994941.png",
-	  "forumself":"http://forum.arcgames.com/battleoftheimmortals/categories/battleoftheimmortals",
-	  "forumembed":"http://www.arcgames.com/en/forums/battleoftheimmortals/#/categories/battleoftheimmortals",
+      "forumself":"http://forum.arcgames.com/battleoftheimmortals/categories/battleoftheimmortals",
+      "forumembed":"http://www.arcgames.com/en/forums/battleoftheimmortals/#/categories/battleoftheimmortals",
       "scrape":"zone",
       "state":"initial",
       "url":"http://boi.perfectworld.com/status",
@@ -113,8 +177,8 @@
       "catname":"blacklightretribution",
       "arcname":"blacklight-retribution",
       "logo":"http://images-cdn.perfectworld.com/arc/5d/49/5d49d74ac317bb7160337bacb75701191385067585.png",
-	  "forumself":"http://forum.arcgames.com/blacklightretribution/categories/blacklightretribution",
-	  "forumembed":"http://www.arcgames.com/en/forums/blacklightretribution/#/categories/blacklightretribution"
+      "forumself":"http://forum.arcgames.com/blacklightretribution/categories/blacklightretribution",
+      "forumembed":"http://www.arcgames.com/en/forums/blacklightretribution/#/categories/blacklightretribution"
     },
     {
       "name":"ELS",
@@ -122,8 +186,8 @@
       "catname":"elsword",
       "arcname":"Elsword",
       "logo":"http://images-cdn.perfectworld.com/arc/79/0c/790c434d55e978555c6a51ff796029591423791394.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/elsword",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/elsword"
+      "forumself":"http://forum.arcgames.com/arc/categories/elsword",
+      "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/elsword"
     },
     {
       "name":"ESO",
@@ -131,8 +195,8 @@
       "catname":"ethersagaodyssey",
       "arcname":"ether-saga-odyssey",
       "logo":"http://images-cdn.perfectworld.com/arc/3e/1f/3e1f70e14a0bd0d96705b65b079801221386047915.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/ethersagaodyssey",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/ethersagaodyssey"
+      "forumself":"http://forum.arcgames.com/arc/categories/ethersagaodyssey",
+      "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/ethersagaodyssey"
     },
     {
       "name":"PW",
@@ -140,54 +204,54 @@
       "catname":"prime-world",
       "arcname":"Prime_World",
       "logo":"http://images-cdn.perfectworld.com/arc/94/ec/94ec34ae25f734803e89f145ea28dfc31430354530.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/prime-world",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/prime-world"
+      "forumself":"http://forum.arcgames.com/arc/categories/prime-world",
+      "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/prime-world"
     },
     {
       "name":"RQ",
-      "propername":"Royal Quest",      
+      "propername":"Royal Quest",
       "catname":"royal-quest",
       "arcname":"Royal_Quest",
       "logo":"http://images-cdn.perfectworld.com/arc/49/18/49185e8a9a3672c0d02db0a08e0b11f41430953754.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/royal-quest",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/royal-quest"
+      "forumself":"http://forum.arcgames.com/arc/categories/royal-quest",
+      "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/royal-quest"
     },
     {
       "name":"SC",
-      "propername":"Star Conflict",      
+      "propername":"Star Conflict",
       "catname":"star-conflict",
       "arcname":"Star_Conflict",
       "logo":"http://images-cdn.perfectworld.com/arc/b0/d7/b0d7ba458793fa27ff99bfd8cd57a8241426788017.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/star-conflict",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/star-conflict"
+      "forumself":"http://forum.arcgames.com/arc/categories/star-conflict",
+      "forumembed":"http://www.arcgames.com/en/forums/arc/#/categories/star-conflict"
     },
     {
       "name":"SK",
-      "propername":"Stronghold Kingdoms",      
+      "propername":"Stronghold Kingdoms",
       "catname":"stronghold-kingdoms",
       "arcname":"Stronghold_Kingdoms",
       "logo":"http://images-cdn.perfectworld.com/arc/68/c2/68c232a17c60f90978bd3420a39949881425581480.png",
-	  "forumself":"http://forum.arcgames.com/arc/categories/stronghold-kingdoms",
-	  "forumembed":"http://www.arcgames.com/en/forums/arc#/categories/stronghold-kingdoms"
+      "forumself":"http://forum.arcgames.com/arc/categories/stronghold-kingdoms",
+      "forumembed":"http://www.arcgames.com/en/forums/arc#/categories/stronghold-kingdoms"
     },
     {
       "name":"SM",
-      "propername":"Swordsman",     
+      "propername":"Swordsman",
       "catname":"Swordsman",
       "arcname":"swordsman",
-      "logo":"http://images-cdn.perfectworld.com/arc/68/72/68726923a8a436c82dbbdd8973ac24631414170956.png", 
-	  "forumself":"http://forum.arcgames.com/swordsman/categories/swordsman",
-	  "forumembed":"http://www.arcgames.com/en/forums/swordsman/#/categories/swordsman"
+      "logo":"http://images-cdn.perfectworld.com/arc/68/72/68726923a8a436c82dbbdd8973ac24631414170956.png",
+      "forumself":"http://forum.arcgames.com/swordsman/categories/swordsman",
+      "forumembed":"http://www.arcgames.com/en/forums/swordsman/#/categories/swordsman"
     },
     {
       "name":"WOI",
       "propername":"War of the Immortals",
-	  "catname":"waroftheimmortals",
+      "catname":"waroftheimmortals",
       "arcname":"war-of-the-immortals",
       "logo":"http://images-cdn.perfectworld.com/arc/1c/a3/1ca3942f422047f4d5fd284a10fe43d41398393797.png",
-	  "forumself":"http://forum.arcgames.com/waroftheimmortals/categories/waroftheimmortals",
-	  "forumembed":"http://www.arcgames.com/en/forums/waroftheimmortals/#/categories/waroftheimmortals",
-	  "scrape":"zone",
+      "forumself":"http://forum.arcgames.com/waroftheimmortals/categories/waroftheimmortals",
+      "forumembed":"http://www.arcgames.com/en/forums/waroftheimmortals/#/categories/waroftheimmortals",
+      "scrape":"zone",
       "state":"initial",
       "url":"http://woi.perfectworld.com/status",
       "xpath":"' AND xpath='//div[contains(@class,\"zone\")]'",
